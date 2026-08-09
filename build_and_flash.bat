@@ -2,7 +2,7 @@
 setlocal
 
 echo ===============================================
-echo Building STM32F103 AHT20 Baremetal Project
+echo Building STM32F103 Controlling-Robot-Car
 echo ===============================================
 
 REM Change to project directory
