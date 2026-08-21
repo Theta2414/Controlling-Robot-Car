@@ -10,6 +10,7 @@ build/
 build-*/
 cmake-build-*/
 out/
+Report/
 
 # Ninja
 .ninja_deps
