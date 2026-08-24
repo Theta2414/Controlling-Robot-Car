@@ -1,0 +1,51 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\begin{document}
+    \begin{tikzpicture}[
+        block/.style={
+            draw,
+            rectangle,
+            rounded corners=2pt,
+            minimum width=2.2cm,
+            minimum height=0.8cm,
+            align=center,
+            font=\small
+        },
+        arrow/.style={
+            ->,
+            >=stealth,
+            thick
+        },
+        node distance=0.25cm
+    ]
+
+        \node[block] (mpu) {MPU6050};
+
+        \node[block, right=of mpu] (collect)
+        {Thu thập\\dữ liệu};
+
+        \node[block, right=of collect] (pre)
+        {Tiền xử lý};
+
+        \node[block, right=of pre] (kalman)
+        {Kalman\\Filter};
+
+        \node[block, right=of kalman] (angle)
+        {Pitch / Roll};
+
+        \node[block, right=of angle] (control)
+        {Điều khiển\\robot};
+
+        \draw[arrow] (mpu) -- (collect);
+        \draw[arrow] (collect) -- (pre);
+        \draw[arrow] (pre) -- (kalman);
+        \draw[arrow] (kalman) -- (angle);
+        \draw[arrow] (angle) -- (control);
+
+    \end{tikzpicture}
+\end{document}

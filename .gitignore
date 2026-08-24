@@ -10,7 +10,11 @@ build/
 build-*/
 cmake-build-*/
 out/
-Report/
+Report/build
+Report/tikz/build
+Report/*.gz
+Report/tikz/*.gz
+Report/References
 
 # Ninja
 .ninja_deps

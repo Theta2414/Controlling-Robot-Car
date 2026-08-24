@@ -1,0 +1,121 @@
+\let\temp\cleardoublepage
+\renewcommand{\cleardoublepage}{\clearpage}
+\pagenumbering{roman}
+\phantomsection
+\addcontentsline{toc}{chapter}{Lời cam đoan}
+\chapter*{Lời cam đoan}
+
+Nhóm xin cam đoan rằng báo cáo này là kết quả của quá trình nghiên cứu và thực hiện của các thành viên trong nhóm. Các thông tin, số liệu và tài liệu được sử dụng trong báo cáo đều được thu thập từ các nguồn phù hợp và trích dẫn đầy đủ. Nhóm chịu trách nhiệm về tính chính xác và trung thực của nội dung được trình bày trong báo cáo.
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Lời cảm ơn}
+\chapter*{Lời cảm ơn}
+
+Nhóm em xin được gửi lời cảm ơn đến Mentor Phạm Quang Vinh đã hướng dẫn, hỗ trợ và đưa ra những góp ý hữu ích trong quá trình thực hiện báo cáo này, cũng như HCMUT MLIoT Lab đã luôn đồng hành và truyền tải những kiến thức hữu ích của môn học. Những đóng góp của HCMUT MLIoT Lab và Mentor đã góp phần giúp nhóm em hoàn thành được trọn vẹn môn học.
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Tóm tắt đề tài}
+\chapter*{Tóm tắt đề tài}
+
+Đề tài tập trung vào việc thiết kế và chế tạo một hệ thống xe robot điều khiển không dây dựa trên góc nghiêng của thiết bị điều khiển, nhằm tạo ra phương thức tương tác trực quan và thuận tiện hơn so với các phương pháp điều khiển truyền thống bằng nút bấm hoặc joystick. Hệ thống sử dụng cảm biến quán tính MPU6050 để thu thập dữ liệu chuyển động và xác định góc nghiêng của thiết bị điều khiển. Vi điều khiển STM32F103 thực hiện xử lý dữ liệu từ cảm biến, tính toán góc nghiêng và chuyển đổi thông tin này thành tín hiệu điều khiển.
+
+Dữ liệu điều khiển được truyền không dây thông qua module Bluetooth HC-05 và giao tiếp UART đến xe robot. Tại phía xe, vi điều khiển tiếp nhận dữ liệu và điều khiển hai driver động cơ để vận hành bốn động cơ DC, cho phép xe thực hiện các chuyển động tiến, lùi và rẽ tương ứng với thao tác nghiêng của thiết bị điều khiển. Tốc độ và hướng di chuyển của xe được điều chỉnh thông qua phương pháp điều chế độ rộng xung (PWM). Đề tài tập trung vào việc xây dựng và kiểm tra prototype trong điều kiện địa hình bằng phẳng, không phát triển các chức năng tự hành và không sử dụng các thuật toán lọc nhiễu phức tạp.
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Mục lục}
+{
+    \setlength{\parskip}{6pt}
+    \tableofcontents
+}
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Danh sách bảng}
+{
+    \setlength{\parskip}{6pt}
+    \listoftables
+}
+\phantomsection
+\addcontentsline{toc}{chapter}{Danh sách hình vẽ}
+{
+    \setlength{\parskip}{6pt}
+    \listoffigures
+}
+
+\phantomsection
+\addcontentsline{toc}{chapter}{Danh sách các từ viết tắt và thuật ngữ}
+\chapter*{Danh sách các từ viết tắt và thuật ngữ}
+
+% \noindent
+\renewcommand{\arraystretch}{1.3}
+\noindent
+\begin{tabular}{|p{4.3cm}|p{10.7cm}|}
+\hline
+\textbf{Từ viết tắt / Thuật ngữ} & \textbf{Giải nghĩa / Ý nghĩa trong hệ thống} \\
+\hline
+\textbf{Accelerometer} & Cảm biến gia tốc (Đo gia tốc theo ba trục $X$, $Y$, $Z$ và được sử dụng để tính góc Pitch và Roll). \\ \hline
+\textbf{ARM} & Advanced RISC Machine (Kiến trúc vi xử lý 32-bit hiệu năng cao). \\ \hline
+\textbf{Bias} & Độ lệch (Sai lệch của Gyroscope khi cảm biến đứng yên, được ước lượng trong quá trình hiệu chuẩn). \\ \hline
+\textbf{Calibration} & Hiệu chuẩn (Quá trình xác định và loại bỏ độ lệch của cảm biến trước khi sử dụng dữ liệu). \\ \hline
+\textbf{Control signal} & Tín hiệu điều khiển (Giá trị được tạo ra từ góc nghiêng để xác định mức độ điều khiển robot). \\ \hline
+\textbf{Covariance} & Hiệp phương sai (Đại lượng biểu diễn mức độ không chắc chắn của trạng thái ước lượng trong Kalman Filter). \\ \hline
+\textbf{CPU} & Central Processing Unit (Bộ xử lý trung tâm). \\ \hline
+\textbf{DC} & Direct Current (Dòng điện một chiều). \\ \hline
+\textbf{Deadzone} & Vùng chết (Khoảng góc nhỏ quanh $0^\circ$ trong đó giá trị điều khiển được đặt bằng $0$). \\ \hline
+\textbf{DLPF} & Digital Low Pass Filter (Bộ lọc thông thấp số, được sử dụng để giảm ảnh hưởng của nhiễu tần số cao trong dữ liệu cảm biến). \\ \hline
+\textbf{Drift} & Hiện tượng trôi (Sai lệch tích lũy theo thời gian, thường xuất hiện trong dữ liệu Gyroscope). \\ \hline
+\textbf{Forward control} & Điều khiển tiến/lùi (Giá trị điều khiển được tạo ra từ góc Pitch sau Kalman). \\ \hline
+\textbf{GPIO} & General Purpose Input/Output (Cổng giao tiếp vào/ra đa dụng). \\ \hline
+\textbf{Gyroscope} & Cảm biến con quay hồi chuyển (Đo vận tốc góc theo ba trục $X$, $Y$, $Z$ và cung cấp thông tin về chuyển động quay). \\ \hline
+\textbf{HMI} & Human-Machine Interface (Giao diện người - máy). \\ \hline
+\end{tabular}
+
+\newpage
+\noindent
+\begin{tabular}{|p{4.3cm}|p{10.7cm}|}
+\hline
+\textbf{Từ viết tắt / Thuật ngữ} & \textbf{Giải nghĩa / Ý nghĩa trong hệ thống} \\
+\hline
+\textbf{I2C} & Inter-Integrated Circuit (Chuẩn giao tiếp nối tiếp đồng bộ giữa các IC). \\ \hline
+\textbf{IMU} & Inertial Measurement Unit (Bộ đo lường quán tính). \\ \hline
+\textbf{Kalman Filter} & Bộ lọc Kalman (Bộ lọc kết hợp thông tin từ Accelerometer và Gyroscope để ước lượng góc nghiêng). \\ \hline
+\textbf{Kalman gain} & Hệ số Kalman (Hệ số xác định mức độ ảnh hưởng của phép đo mới đến giá trị ước lượng sau khi cập nhật). \\ \hline
+\textbf{Loop} & Vòng lặp (Chu kỳ xử lý được thực hiện lặp lại trong chương trình). \\ \hline
+\textbf{LSB} & Least Significant Bit (Đơn vị số, đơn vị biểu diễn giá trị số đầu ra của cảm biến). \\ \hline
+\textbf{Mapping} & Ánh xạ (Quá trình chuyển đổi góc nghiêng thành giá trị điều khiển). \\ \hline
+\textbf{Measurement} & Phép đo (Giá trị góc được xác định từ dữ liệu Accelerometer). \\ \hline
+\textbf{Measurement noise} & Nhiễu phép đo (Thành phần biểu diễn mức độ nhiễu của phép đo góc từ Accelerometer). \\ \hline
+\textbf{Measurement Update} & Cập nhật phép đo (Bước hiệu chỉnh giá trị dự đoán bằng thông tin đo từ Accelerometer). \\ \hline
+\textbf{MEMS} & Micro-Electro-Mechanical Systems (Hệ thống vi cơ điện tử). \\ \hline
+\textbf{Offset} & Độ lệch ban đầu (Giá trị góc ban đầu được xác định trong quá trình hiệu chuẩn và sử dụng làm mốc tham chiếu). \\ \hline
+\textbf{Pitch} & Góc nghiêng Pitch (Góc nghiêng được sử dụng để xác định mức độ điều khiển tiến/lùi của robot). \\ \hline
+\textbf{Prediction} & Dự đoán (Bước dự đoán góc tiếp theo dựa trên góc hiện tại và vận tốc góc từ Gyroscope). \\ \hline
+\textbf{Process noise} & Nhiễu quá trình (Thành phần biểu diễn mức độ không chắc chắn của mô hình trong quá trình dự đoán). \\ \hline
+\end{tabular}
+
+\newpage
+\noindent
+\begin{tabular}{|p{4.3cm}|p{10.7cm}|}
+\hline
+\textbf{Từ viết tắt / Thuật ngữ} & \textbf{Giải nghĩa / Ý nghĩa trong hệ thống} \\
+\hline
+\textbf{PWM} & Pulse Width Modulation (Điều chế độ rộng xung). \\ \hline
+\textbf{Rate} & Vận tốc góc (Tốc độ thay đổi góc được lấy từ Gyroscope). \\ \hline
+\textbf{Raw data} & Dữ liệu thô (Dữ liệu trực tiếp thu được từ MPU6050 trước khi chuyển đổi và hiệu chuẩn). \\ \hline
+\textbf{Residual} & Sai số phép đo (Độ chênh lệch giữa giá trị đo từ Accelerometer và giá trị góc được dự đoán bởi Kalman Filter). \\ \hline
+\textbf{Roll} & Góc nghiêng Roll (Góc nghiêng được sử dụng để xác định mức độ điều khiển rẽ của robot). \\ \hline
+\textbf{Sampling rate} & Tần số lấy mẫu (Số lần cảm biến thực hiện lấy dữ liệu trong một giây). \\ \hline
+\textbf{Saturation} & Giới hạn / bão hòa (Giới hạn góc hoặc giá trị điều khiển trong phạm vi cho phép). \\ \hline
+\textbf{Sensitivity} & Độ nhạy (Hệ số chuyển đổi giá trị số của cảm biến sang đại lượng vật lý tương ứng). \\ \hline
+\textbf{SPP} & Serial Port Profile (Giao thức cổng nối tiếp Bluetooth). \\ \hline
+\textbf{State} & Trạng thái (Đại lượng được Kalman Filter ước lượng, trong hệ thống là góc nghiêng và độ lệch Gyroscope). \\ \hline
+\textbf{State estimate} & Ước lượng trạng thái (Giá trị trạng thái được ước lượng sau quá trình prediction và measurement update). \\ \hline
+\textbf{Turn control} & Điều khiển rẽ (Giá trị điều khiển được tạo ra từ góc Roll sau Kalman). \\ \hline
+\textbf{UART} & Universal Asynchronous Receiver-Transmitter (Bộ truyền nối tiếp bất đồng bộ). \\ \hline
+\textbf{WHO\_AM\_I} & Thanh ghi nhận dạng thiết bị (Thanh ghi được sử dụng để kiểm tra và xác nhận thiết bị MPU6050 đang giao tiếp). \\ \hline
+\textbf{Yaw} & Góc quay Yaw (Góc quay quanh trục $Z$; không được sử dụng trong quá trình điều khiển hiện tại). \\ \hline
+\textbf{$\Delta t$ / Time interval} & Khoảng thời gian (Khoảng thời gian giữa hai lần cập nhật liên tiếp của Kalman Filter). \\ \hline
+\end{tabular}
+\renewcommand{\arraystretch}{1.0}
+
+% Restore default
+\let\cleardoublepage\temp

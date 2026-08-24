@@ -1,0 +1,47 @@
+\pagenumbering{arabic}
+
+\chapter{Tổng quan}
+
+\section{Cơ sở lý luận}
+Trong kỷ nguyên công nghiệp 4.0, ngành chế tạo robot và tự động hóa đang phát triển mạnh mẽ, len lỏi vào nhiều lĩnh vực từ sản xuất công nghiệp, y tế cho đến đời sống sinh hoạt hằng ngày \cite{marwedel2021embedded}. Trong đó, Giao diện người - máy (HMI - Human-Machine Interface) đóng vai trò quyết định đến hiệu quả, tính linh hoạt và mức độ dễ tiếp cận của một hệ thống điều khiển.
+
+Theo truyền thống, các phương tiện di động hoặc robot di chuyển (robot car) thường được điều khiển thông qua các thiết bị phần cứng vật lý có tính cố định cao như bàn phím, nút bấm hoặc cần gạt (joystick). Tuy nhiên, các phương pháp này tồn tại một số hạn chế nhất định:
+\begin{itemize}
+    \item Đòi hỏi người sử dụng phải làm quen với sơ đồ bố trí phím bấm hoặc cơ chế gạt cơ học, làm tăng thời gian tiếp cận và học cách vận hành.
+    \item Thiếu tính trực quan và phản xạ tự nhiên. Trong các tình huống đòi hỏi phản ứng nhanh hoặc trong môi trường phức tạp, việc thao tác qua nút bấm dễ gây ra sự nhầm lẫn hoặc thao tác sai lệch.
+    \item Khó tiếp cận đối với một số nhóm người dùng đặc biệt, ví dụ như người khuyết tật vận động tay nhẹ hoặc những người cần điều khiển thiết bị rảnh tay cho các nhiệm vụ khác.
+\end{itemize}
+
+Sự bứt phá của công nghệ vi cơ điện tử MEMS (Micro-Electro-Mechanical Systems) \cite{serway2018physics} đã mở ra một hướng đi mới bằng việc chế tạo các cảm biến quán tính (IMU - Inertial Measurement Unit) có kích thước siêu nhỏ, độ nhạy cao, tiêu thụ năng lượng thấp và giá thành rẻ. Cảm biến MPU6050 là một minh chứng điển hình, tích hợp cả gia tốc kế 3 trục và con quay hồi chuyển 3 trục trên cùng một chip silicon. Công nghệ này cho phép nhận diện chính xác chuyển động và góc nghiêng của thiết bị điều khiển trong không gian ba chiều \cite{mpu6050-datasheet}.
+
+Từ những cơ sở thực tiễn đó, việc thiết kế một hệ thống điều khiển robot xe không dây thông qua góc nghiêng bàn tay là một giải pháp thiết thực. Hệ thống này không chỉ tối ưu hóa trải nghiệm tương tác giữa con người và robot (trở nên tự nhiên, trực quan và tức thời hơn) mà còn mở rộng khả năng ứng dụng của robot trong các môi trường công nghiệp lẫn đời sống sinh hoạt.
+
+\section{Mục tiêu đề tài}
+Mục tiêu tổng quát của đề tài là thiết kế, lập trình và chế tạo thành công một hệ thống xe robot có khả năng di chuyển tương ứng với góc nghiêng của thiết bị điều khiển bằng cách kết hợp cảm biến MPU6050, vi điều khiển STM32F103, truyền thông không dây Bluetooth và điều khiển tốc độ bằng phương pháp điều chế độ rộng xung (PWM).
+
+Để đạt được mục tiêu tổng quát trên, nhóm đề ra các mục tiêu cụ thể sau:
+\begin{itemize}
+    \item \textbf{Phát triển khối phát (thiết bị điều khiển cầm tay):} Thiết kế mạch phần cứng sử dụng vi điều khiển STM32F103C8T6 để đọc dữ liệu thô (gia tốc và vận tốc góc) từ cảm biến MPU6050 thông qua giao tiếp I2C. Lập trình tính toán góc nghiêng (Pitch, Roll) của thiết bị điều khiển làm cơ sở sinh lệnh điều khiển.
+    \item \textbf{Thiết lập liên kết không dây:} Kết nối hai vi điều khiển ở khối phát và khối thu thông qua giao tiếp không dây sử dụng hai module Bluetooth HC-05. Dữ liệu điều khiển được truyền tải bằng giao thức truyền thông UART phần cứng hoạt động ổn định và có độ trễ thấp.
+    \item \textbf{Phát triển khối thu (xe robot):} Thiết kế và lắp ráp khung xe robot 4 bánh sử dụng động cơ DC chổi than. Lập trình vi điều khiển STM32F103C8T6 ở khối thu để nhận dữ liệu qua UART, giải mã tín hiệu điều khiển và điều chỉnh tốc độ, hướng di chuyển của xe thông qua mạch driver động cơ TB6612FNG bằng phương pháp băm xung PWM và các chân GPIO điều khiển chiều.
+    \item \textbf{Thử nghiệm và tối ưu hóa:} Chế tạo thành công mô hình hoạt động thực tế ổn định, kiểm tra độ nhạy, khả năng điều khiển xe di chuyển linh hoạt (tiến, lùi, rẽ trái, rẽ phải, dừng) theo các hướng nghiêng tương ứng của tay cầm.
+\end{itemize}
+
+\section{Phạm vi đề tài}
+Đề tài được thực hiện trong khuôn khổ môn học Thiết kế Hệ thống Nhúng với các giới hạn và giả định cụ thể như sau:
+
+\textbf{Giới hạn về mặt kỹ thuật:}
+\begin{itemize}
+    \item Hệ thống sử dụng dòng vi điều khiển 32-bit ARM Cortex-M3 (STM32F103C8T6) làm bộ xử lý trung tâm cho cả khối phát và khối thu.
+    \item Giao tiếp cảm biến MPU6050 thực hiện qua chuẩn I2C, truyền thông không dây qua module Bluetooth HC-05 cấu hình ở chế độ Master-Slave (giao tiếp UART với tốc độ BaudRate chuẩn).
+    \item Việc điều khiển động cơ DC chổi than sử dụng mạch cầu H điều khiển động cơ TB6612FNG với tín hiệu điều rộng xung PWM để kiểm soát tốc độ và GPIO để điều khiển chiều quay.
+    \item Không tích hợp các thuật toán lọc nhiễu hay tính toán động học phức tạp (như bộ lọc Kalman đầy đủ, bộ điều khiển PID cho động cơ).
+    \item Xe robot chỉ thực hiện các chuyển động cơ bản được điều hướng trực tiếp bởi người dùng thông qua góc nghiêng tay cầm, không tích hợp các cảm biến tự hành (như cảm biến siêu âm tránh vật cản, cảm biến dò đường line).
+\end{itemize}
+
+\textbf{Phạm vi ứng dụng và giả định thực tế:}
+\begin{itemize}
+    \item Xe robot hoạt động trong phạm vi kết nối không dây của module Bluetooth HC-05 (giới hạn dưới 10 mét trong môi trường không có vật cản lớn).
+    \item Địa hình thử nghiệm được giả định là mặt phẳng nằm ngang, có độ ma sát đồng đều và không có độ dốc hay chướng ngại vật lớn.
+    \item Nguồn năng lượng cung cấp (pin Li-ion) cho cả tay cầm điều khiển và xe robot luôn được đảm bảo ổn định, không xảy ra hiện tượng sụt áp đột ngột làm ảnh hưởng đến hoạt động của vi điều khiển và động cơ.
+\end{itemize}

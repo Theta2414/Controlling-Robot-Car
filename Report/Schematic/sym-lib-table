@@ -1,0 +1,5 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "STM32") (type "Legacy") (uri "C:/Users/machv/repos/Controlling-Robot-Car/Report/Schematic/Lib/bp.lib") (options "") (descr ""))
+	(lib (name "MPU6050") (type "Legacy") (uri "${KIPRJMOD}/Lib/mpu6050-cache.lib") (options "") (descr ""))
+)

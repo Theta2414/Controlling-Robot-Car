@@ -1,0 +1,78 @@
+{
+
+\thispagestyle{empty}
+\newgeometry{top=2cm, inner=3cm, outer=2cm, bottom=2cm}
+
+\begin{tikzpicture}[remember picture, overlay]
+    \draw[line width=3pt] (
+        $(current page.north west) + (2.5cm, -2cm)$)
+        rectangle (
+        $(current page.south east) + (-1.5cm, 1.5cm)$
+    );
+    \draw[line width=1pt] (
+        $(current page.north west) + (2.7cm, -2.2cm)$)
+        rectangle (
+        $(current page.south east) + (-1.7cm, 1.7cm)$
+    );
+\end{tikzpicture}
+\changefontsizes{14pt}
+\bf\center
+\setstretch{1.2}
+ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH
+
+TRƯỜNG ĐẠI HỌC BÁCH KHOA
+
+--------o0o--------
+
+\vfill
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=4cm]{imgs/01_logobachkhoatachnen_cropped.png}
+\end{figure}
+
+EMBEDDED C
+
+PROJECT
+
+\vfill
+
+\changefontsizes{18pt}
+
+Hệ thống Điều khiển Xe Robot không dây sử dụng Cảm biến MPU6050 và PWM trên Vi điều khiển STM32F103
+
+\changefontsizes{14pt}
+
+% \vfill
+
+% \begin{tabular}{r @{\space} l}
+%     GROUP: & PỎSCHE WITH NO BRAKES \\
+%     TA: & PLACEHOLDER
+% \end{tabular}
+
+\vfill
+
+\changefontsizes{12pt}
+
+\renewcommand{\arraystretch}{1.5}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{r l l}
+        NHÓM: & PỎSCHE WITH NO BRAKES & \\
+        MENTOR: & VÕ QUANG VINH & \\
+        THÀNH VIÊN: & NGUYỄN CÔNG TÚ & 2413851\\
+        & PHẠM ĐỖ HỒNG PHÚC & 2510359 \\
+        & MẠCH VIỄN AN & 2510404 \\
+        & NGUYỄN PHÚC KHẢI & 2511489\\
+    \end{tabular}
+\end{table}
+
+\vfill
+
+\normalfont
+
+THÀNH PHỐ HỒ CHÍ MINH, THÁNG 8 2026
+
+\restoregeometry
+}

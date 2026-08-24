@@ -1,0 +1,1170 @@
+270988565153725
+SMD
+623SMT-RJ25
+
+
+0
+7
+7
+SMD
+CDR43
+
+
+0
+2
+2
+SMD
+CP_Elec_8x10.5
+SMT capacitor, aluminium electrolytic, 8x10.5, Vishay 0810 http://www.vishay.com/docs/28395/150crz.pdf
+Capacitor Electrolytic
+0
+2
+2
+SMD
+C_0201
+Capacitor SMD 0201, reflow soldering, AVX (see smccp.pdf)
+capacitor 0201
+0
+2
+2
+SMD
+C_0402
+Capacitor SMD 0402, reflow soldering, AVX (see smccp.pdf)
+capacitor 0402
+0
+2
+2
+SMD
+C_0603
+Capacitor SMD 0603, reflow soldering, AVX (see smccp.pdf)
+capacitor 0603
+0
+2
+2
+SMD
+C_0805
+Capacitor SMD 0805, reflow soldering, AVX (see smccp.pdf)
+capacitor 0805
+0
+2
+2
+SMD
+C_1206
+Capacitor SMD 1206, reflow soldering, AVX (see smccp.pdf)
+capacitor 1206
+0
+2
+2
+SMD
+C_1210
+Capacitor SMD 1210, reflow soldering, AVX (see smccp.pdf)
+capacitor 1210
+0
+2
+2
+SMD
+C_1812
+Capacitor SMD 1812, reflow soldering, AVX (see smccp.pdf)
+capacitor 1812
+0
+2
+2
+SMD
+C_1825
+Capacitor SMD 1825, reflow soldering, AVX (see smccp.pdf)
+capacitor 1825
+0
+2
+2
+SMD
+C_2220
+Capacitor SMD 2220, reflow soldering, AVX (see smccp.pdf)
+capacitor 2220
+0
+2
+2
+SMD
+C_2225
+Capacitor SMD 2225, reflow soldering, AVX (see smccp.pdf)
+capacitor 2225
+0
+2
+2
+SMD
+D_0603
+Diode SMD in 0603 package http://datasheets.avx.com/schottky.pdf
+smd diode
+0
+2
+2
+SMD
+D_0805
+Diode SMD in 0805 package http://datasheets.avx.com/schottky.pdf
+smd diode
+0
+2
+2
+SMD
+D_1206
+Diode SMD 1206, reflow soldering http://datasheets.avx.com/schottky.pdf
+Diode 1206
+0
+2
+2
+SMD
+D_2010
+Diode SMD 2010, reflow soldering http://datasheets.avx.com/schottky.pdf
+Diode 2010
+0
+2
+2
+SMD
+D_2114
+Diode SMD 2114, reflow soldering http://datasheets.avx.com/schottky.pdf
+Diode 2114
+0
+2
+2
+SMD
+D_3220
+Diode SMD 3220, reflow soldering http://datasheets.avx.com/schottky.pdf
+Diode 3220
+0
+2
+2
+SMD
+D_SMA
+Diode SMA (DO-214AC)
+Diode SMA (DO-214AC)
+0
+2
+2
+SMD
+D_SMB
+Diode SMB (DO-214AA)
+Diode SMB (DO-214AA)
+0
+2
+2
+SMD
+D_SMC
+Diode SMC (DO-214AB)
+Diode SMC (DO-214AB)
+0
+2
+2
+SMD
+D_SOD-110
+SOD-110
+SOD-110
+0
+2
+2
+SMD
+D_SOD-123
+SOD-123
+SOD-123
+0
+2
+2
+SMD
+D_SOD-123F
+D_SOD-123F
+D_SOD-123F
+0
+2
+2
+SMD
+D_SOD-323
+SOD-323
+SOD-323
+0
+2
+2
+SMD
+D_SOT-23_ANK
+SOT-23, Single Diode
+SOT-23
+0
+3
+2
+SMD
+D_SOT-23_NKA
+SOT-23, Single Diode
+SOT-23
+0
+3
+2
+SMD
+EC11
+
+
+0
+9
+8
+SMD
+ESP-8266
+http://www.world-semi.com/uploads/soft/150522/1-150522091P5.pdf
+ESP
+0
+16
+16
+SMD
+ESP-8285
+http://www.world-semi.com/uploads/soft/150522/1-150522091P5.pdf
+LED NeoPixel
+0
+16
+6
+SMD
+Fuse_1812
+0679H Series, 2410 Size
+Fuse
+0
+2
+2
+SMD
+InfraredTube-4.5Lx10H-5mm-pitch
+
+
+0
+4
+4
+SMD
+JDY-16
+http://www.world-semi.com/uploads/soft/150522/1-150522091P5.pdf
+LED NeoPixel
+0
+24
+7
+SMD
+JTI_2450BM15A002
+
+
+0
+6
+6
+SMD
+LED_5x3.2Hold
+http://www.world-semi.com/uploads/soft/150522/1-150522091P5.pdf
+LED NeoPixel
+0
+4
+4
+SMD
+LED_0402
+LED 0402 smd package
+LED led 0402 SMD smd SMT smt smdled SMDLED smtled SMTLED
+0
+2
+2
+SMD
+LED_0603
+LED 0603 smd package
+LED led 0603 SMD smd SMT smt smdled SMDLED smtled SMTLED
+0
+2
+2
+SMD
+LED_0805
+LED 0805 smd package
+LED led 0805 SMD smd SMT smt smdled SMDLED smtled SMTLED
+0
+2
+2
+SMD
+LED_1206
+LED 1206 smd package
+LED led 1206 SMD smd SMT smt smdled SMDLED smtled SMTLED
+0
+2
+2
+SMD
+LED_1210
+LED 1206 smd package
+LED led 1206 SMD smd SMT smt smdled SMDLED smtled SMTLED
+0
+2
+2
+SMD
+LED_3528
+Tantalum capacitor, Case B, EIA 3528-21, 3.5x2.8x1.9mm, Reflow soldering footprint
+capacitor tantalum smd
+0
+2
+2
+SMD
+LED_FGGWS3535-2812
+http://www.world-semi.com/uploads/soft/150522/1-150522091P5.pdf
+LED NeoPixel
+0
+4
+4
+SMD
+LED_RGB_1210
+RGB LED 3.2x2.7mm http://www.avagotech.com/docs/AV02-0610EN
+LED 3227
+0
+4
+4
+SMD
+LED_RGB_4020
+
+
+0
+4
+4
+SMD
+LED_RGB_5050-4
+
+
+0
+4
+4
+SMD
+LED_RGB_5050-6
+http://cdn.sparkfun.com/datasheets/Components/LED/5060BRG4.pdf
+RGB LED 5050-6
+0
+6
+6
+SMD
+LED_RGB_WS2812B_2020
+
+
+0
+4
+4
+SMD
+LED_WS2812-PLCC6
+http://www.world-semi.com/en/Driver/Lighting/WS2811/WS212B/WS2822S/, http://www.cree.com/~/media/Files/Cree/LED-Components-and-Modules/HB/Data-Sheets/CLX6AFKB.pdf
+LED RGB PLCC-6
+0
+6
+6
+SMD
+LED_WS2812B-3535
+http://www.world-semi.com/uploads/soft/150522/1-150522091P5.pdf
+LED NeoPixel
+0
+4
+4
+SMD
+LED_WS2812B-PLCC4
+http://www.world-semi.com/uploads/soft/150522/1-150522091P5.pdf
+LED NeoPixel
+0
+4
+4
+SMD
+LTR_381RGB
+
+
+0
+6
+6
+SMD
+L_5x5.8x4.5
+SMT capacitor, aluminium electrolytic, 8x10.5, Vishay 0810 http://www.vishay.com/docs/28395/150crz.pdf
+Capacitor Electrolytic
+0
+2
+2
+SMD
+L_7.0x7.0x3.0
+SMT capacitor, aluminium electrolytic, 8x10.5, Vishay 0810 http://www.vishay.com/docs/28395/150crz.pdf
+Capacitor Electrolytic
+0
+2
+2
+SMD
+L_0603
+Capacitor SMD 0603, reflow soldering, AVX (see smccp.pdf)
+capacitor 0603
+0
+2
+2
+SMD
+L_0603_1608Metric
+Inductor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: http://www.tortai-tech.com/upload/download/2011102023233369053.pdf), generated with kicad-footprint-generator
+inductor
+0
+2
+2
+SMD
+L_0603_1608Metric_Pad1.05x0.95mm_HandSolder
+Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal with elongated pad for handsoldering. (Body size source: http://www.tortai-tech.com/upload/download/2011102023233369053.pdf), generated with kicad-footprint-generator
+inductor handsolder
+0
+2
+2
+SMD
+L_0805_2012Metric
+Inductor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing), generated with kicad-footprint-generator
+inductor
+0
+2
+2
+SMD
+L_0805_2012Metric_Pad1.15x1.40mm_HandSolder
+Capacitor SMD 0805 (2012 Metric), square (rectangular) end terminal, IPC_7351 nominal with elongated pad for handsoldering. (Body size source: https://docs.google.com/spreadsheets/d/1BsfQQcO9C6DZCsRaXUlFlo91Tg2WpOkGARC1WS5S8t0/edit?usp=sharing), generated with kicad-footprint-generator
+inductor handsolder
+0
+2
+2
+SMD
+L_1812
+Resistor SMD 1812, flow soldering, Panasonic (see ERJ12)
+resistor 1812
+0
+2
+2
+SMD
+L_CD43
+SMT capacitor, aluminium electrolytic, 8x10.5, Vishay 0810 http://www.vishay.com/docs/28395/150crz.pdf
+Capacitor Electrolytic
+0
+2
+2
+SMD
+MSS-22D18
+
+
+0
+6
+6
+SMD
+MicroBitATA
+
+
+0
+44
+42
+SMD
+MicroBitBTB
+
+
+0
+42
+42
+SMD
+Oscillator-SMD-3pin_3.2x1.3mm
+Miniature Crystal Clock Oscillator Abracon ASE series, http://www.abracon.com/Oscillators/ASEseries.pdf, 3.2x2.5mm^2 package
+SMD SMT crystal oscillator
+0
+3
+3
+SMD
+Oscillator-SMD-4pin_3.2x2.5mm
+Miniature Crystal Clock Oscillator Abracon ASE series, http://www.abracon.com/Oscillators/ASEseries.pdf, 3.2x2.5mm^2 package
+SMD SMT crystal oscillator
+0
+4
+4
+SMD
+PS2_PORT
+
+
+0
+10
+9
+SMD
+PT-3528
+Tantalum capacitor, Case B, EIA 3528-21, 3.5x2.8x1.9mm, Reflow soldering footprint
+capacitor tantalum smd
+0
+2
+2
+SMD
+Panasonic_EVQPUJ_EVQPUA
+http://industrial.panasonic.com/cdbs/www-data/pdf/ATV0000/ATV0000CE5.pdf
+SMD SMT SPST EVQPUJ EVQPUA
+0
+4
+2
+SMD
+Photoresistor_3528
+Tantalum capacitor, Case B, EIA 3528-21, 3.5x2.8x1.9mm, Reflow soldering footprint
+capacitor tantalum smd
+0
+2
+2
+SMD
+RGB_SK6812_2427
+
+
+0
+4
+4
+SMD
+R_0201
+Resistor SMD 0201, reflow soldering, Vishay (see crcw0201e3.pdf)
+resistor 0201
+0
+2
+2
+SMD
+R_0402
+Resistor SMD 0402, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 0402
+0
+2
+2
+SMD
+R_0603
+Resistor SMD 0603, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 0603
+0
+2
+2
+SMD
+R_0612
+Resistor SMD 0612, reflow solderinG
+resistor 0612 
+0
+2
+2
+SMD
+R_0805
+Resistor SMD 0805, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 0805
+0
+2
+2
+SMD
+R_1206
+Resistor SMD 1206, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 1206
+0
+2
+2
+SMD
+R_1210
+Resistor SMD 1210, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 1210
+0
+2
+2
+SMD
+R_1218
+Resistor SMD 1218, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 1218
+0
+2
+2
+SMD
+R_1812
+Resistor SMD 1812, flow soldering, Panasonic (see ERJ12)
+resistor 1812
+0
+2
+2
+SMD
+R_2010
+Resistor SMD 2010, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 2010
+0
+2
+2
+SMD
+R_2512
+Resistor SMD 2512, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 2512
+0
+2
+2
+SMD
+R_2816
+Resistor SMD 2816, reflow soldering, Vishay (see WSL-VISHAY.PDF)
+resistor 2816
+0
+2
+2
+SMD
+R_Array_Concave_2x0603
+Thick Film Chip Resistor Array, Wave soldering, Vishay CRA06P (see cra06p.pdf)
+resistor array
+0
+4
+4
+SMD
+R_Array_Concave_4x0402
+Thick Film Chip Resistor Array, Wave soldering, Vishay CRA04P (see cra04p.pdf)
+resistor array
+0
+8
+8
+SMD
+R_Array_Concave_4x0603
+Thick Film Chip Resistor Array, Wave soldering, Vishay CRA06P (see cra06p.pdf)
+resistor array
+0
+8
+8
+SMD
+SMD-1.5Hole-2.54mm-Pitch-2P
+
+
+0
+2
+2
+SMD
+SMD-1.5Hole-2.54mm-Pitch-3Px2
+
+
+0
+6
+6
+SMD
+SMD-1.6x1.0-5W3.2L
+http://www.world-semi.com/uploads/soft/150522/1-150522091P5.pdf
+LED NeoPixel
+0
+4
+4
+SMD
+SMD-1.6x1.4-2.2W2.5L
+
+
+0
+4
+4
+SMD
+SMD-12Wx12Lx7.3H-4pin
+
+
+0
+4
+4
+SMD
+SMD-Buzzer-9.1x10.5mm
+
+
+0
+2
+2
+SMD
+SMD-Cap-4.3x4.3
+
+
+0
+2
+2
+SMD
+SMD-Cap-6.3x5.4
+SMT capacitor, aluminium electrolytic, 6.3x5.4, Panasonic C55 
+Capacitor Electrolytic
+0
+2
+2
+SMD
+SMD-Cap-8x10.5
+SMT capacitor, aluminium electrolytic, 6.3x5.4, Panasonic C55 
+Capacitor Electrolytic
+0
+2
+2
+SMD
+SMD-Cap_8x10.5
+SMT capacitor, aluminium electrolytic, 8x10.5, Vishay 0810 http://www.vishay.com/docs/28395/150crz.pdf
+Capacitor Electrolytic
+0
+2
+2
+SMD
+SMD-Horizontal-GH1.25mm-5P
+
+
+0
+7
+7
+SMD
+SMD-Horizontal-GH1.25mm-6P
+
+
+0
+8
+8
+SMD
+SMD-Horizontal-PH1.00mm-2P
+
+
+0
+4
+4
+SMD
+SMD-Horizontal-PH1.00mm-3P
+
+
+0
+5
+5
+SMD
+SMD-Horizontal-PH1.00mm-4P
+
+
+0
+6
+6
+SMD
+SMD-Horizontal-PH1.00mm-5P
+
+
+0
+7
+7
+SMD
+SMD-Horizontal-PH1.00mm-6P
+
+
+0
+8
+8
+SMD
+SMD-Horizontal-PH1.00mm-7P
+
+
+0
+9
+9
+SMD
+SMD-Horizontal-PH1.00mm-8P
+
+
+0
+10
+10
+SMD
+SMD-Horizontal-PH2.00mm-2P
+
+
+0
+4
+4
+SMD
+SMD-Horizontal-PH2.00mm-3P
+
+
+0
+5
+5
+SMD
+SMD-Horizontal-PH2.00mm-4P
+
+
+0
+6
+6
+SMD
+SMD-Horizontal-PH2.00mm-5P
+
+
+0
+7
+7
+SMD
+SMD-Horizontal-PH2.00mm-6P
+
+
+0
+8
+8
+SMD
+SMD-Horizontal-PH2.00mm-6P-Temp
+
+
+0
+8
+8
+SMD
+SMD-Horizontal-PH2.00mm-7P
+
+
+0
+9
+9
+SMD
+SMD-Horizontal-PH2.54mm-2P
+
+
+0
+4
+4
+SMD
+SMD-IRM-H638T
+C&K Components SPST SMD PTS645 Series 6mm Tact Switch
+SPST Button Switch
+0
+4
+3
+SMD
+SMD-Mic-5mm-2.0mm-pitch
+
+
+0
+2
+2
+SMD
+SMD-Mic-9.5mm-2.0mm-pitch
+
+
+0
+2
+2
+SMD
+SMD-PH2.00mm-2P
+
+
+0
+4
+4
+SMD
+SMD-PH2.00mm-3P
+
+
+0
+5
+5
+SMD
+SMD-PH2.00mm-4P
+
+
+0
+6
+6
+SMD
+SMD-PH2.00mm-5P
+
+
+0
+7
+7
+SMD
+SMD-PH2.00mm-6P
+
+
+0
+8
+8
+SMD
+SMD-PH2.00mm-7P
+
+
+0
+9
+9
+SMD
+SMD-PH2.00mm-8P
+
+
+0
+10
+10
+SMD
+SMD-POT-4.70x4.5
+
+
+0
+3
+3
+SMD
+SMD-RJ25
+
+
+0
+7
+7
+SMD
+SMD-SH1.00mm-6P
+
+
+0
+8
+8
+SMD
+SMD_2548
+Diode SMD 3220, reflow soldering http://datasheets.avx.com/schottky.pdf
+Diode 3220
+0
+2
+2
+SMD
+SMD_Buzzer_ 8.5x8.5
+
+
+0
+4
+4
+SMD
+SMD_PJ_322A
+
+
+0
+5
+5
+SMD
+SMD_Switch_2Pin
+http://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1437566-3&DocType=Customer+Drawing&DocLang=English
+SPST button tactile switch
+0
+2
+2
+SMD
+SW-TACT-4P(4.6,2.25)
+
+
+0
+4
+4
+SMD
+SW_SP3T_PCM13
+Ultraminiature Surface Mount Slide Switch
+
+0
+8
+4
+SMD
+SW_SPDT_CK-JS102011SAQN
+http://www.ckswitches.com/media/1422/js.pdf
+switch spdt
+0
+3
+3
+SMD
+SW_SPDT_PCM12
+Ultraminiature Surface Mount Slide Switch
+
+0
+7
+3
+SMD
+SW_SPST_B3S-1000
+Surface Mount Tactile Switch for High-Density Packaging
+Tactile Switch
+0
+4
+2
+SMD
+SW_SPST_B3S-1100
+Surface Mount Tactile Switch for High-Density Packaging with Ground Terminal
+Tactile Switch
+0
+5
+3
+SMD
+SW_SPST_B3SL-1002P
+Middle Stroke Tactile Switch, B3SL
+Middle Stroke Tactile Switch
+0
+4
+2
+SMD
+SW_SPST_B3SL-1022P
+Middle Stroke Tactile Switch, B3SL
+Middle Stroke Tactile Switch
+0
+4
+2
+SMD
+SW_SPST_B3U-1000P
+Ultra-small-sized Tactile Switch with High Contact Reliability, Top-actuated Model, without Ground Terminal, without Boss
+Tactile Switch
+0
+2
+2
+SMD
+SW_SPST_B3U-1000P-B
+Ultra-small-sized Tactile Switch with High Contact Reliability, Top-actuated Model, without Ground Terminal, with Boss
+Tactile Switch
+0
+2
+2
+SMD
+SW_SPST_EVPBF
+Light Touch Switch
+
+0
+4
+4
+SMD
+SW_SPST_EVQP0
+Light Touch Switch, https://industrial.panasonic.com/cdbs/www-data/pdf/ATK0000/ATK0000CE28.pdf
+
+0
+4
+2
+SMD
+SW_SPST_EVQP2
+Light Touch Switch
+
+0
+4
+2
+SMD
+SW_SPST_EVQP7A
+Light Touch Switch,https://industrial.panasonic.com/cdbs/www-data/pdf/ATK0000/ATK0000CE20.pdf
+
+0
+4
+4
+SMD
+SW_SPST_EVQP7C
+Light Touch Switch
+
+0
+4
+2
+SMD
+SW_SPST_EVQPE1
+Light Touch Switch, https://industrial.panasonic.com/cdbs/www-data/pdf/ATK0000/ATK0000CE7.pdf
+
+0
+2
+2
+SMD
+SW_SPST_EVQQ2
+Light Touch Switch, https://industrial.panasonic.com/cdbs/www-data/pdf/ATK0000/ATK0000CE28.pdf
+
+0
+4
+2
+SMD
+SW_SPST_FSMSM
+http://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1437566-3&DocType=Customer+Drawing&DocLang=English
+SPST button tactile switch
+0
+2
+2
+SMD
+SW_SPST_KMR2
+CK components KMR2 tactile switch http://www.ckswitches.com/media/1479/kmr2.pdf
+tactile switch kmr2
+0
+4
+2
+SMD
+SW_SPST_PTS645
+C&K Components SPST SMD PTS645 Series 6mm Tact Switch
+SPST Button Switch
+0
+4
+2
+SMD
+SW_SPST_PTS810
+C&K Components, PTS 810 Series, Microminiature SMT Top Actuated, http://www.ckswitches.com/media/1476/pts810.pdf
+SPST Button Switch
+0
+4
+2
+SMD
+SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A08
+Light Touch Switch, http://industrial.panasonic.com/cdbs/www-data/pdf/ATK0000/ATK0000CE3.pdf
+SMD SMT SPST EVQPL EVQPT
+0
+6
+3
+SMD
+SW_SPST_Panasonic_EVQPL_3PL_5PL_PT_A15
+Light Touch Switch, http://industrial.panasonic.com/cdbs/www-data/pdf/ATK0000/ATK0000CE3.pdf
+SMD SMT SPST EVQPL EVQPT
+0
+6
+3
+SMD
+SW_SPST_SKQG
+ALPS 5.2mm Square Low-profile TACT Switch (SMD), http://www.alps.com/prod/info/E/PDF/Tact/SurfaceMount/SKQG/SKQG.PDF
+SPST Button Switch
+0
+4
+2
+SMD
+SW_SPST_TL3342
+Low-profile SMD Tactile Switch, https://www.e-switch.com/system/asset/product_line/data_sheet/165/TL3342.pdf
+SPST Tactile Switch
+0
+4
+2
+SMD
+TCS34725
+
+
+0
+6
+6
+SMD
+TC_2012-12_Reflow
+Tantalum capacitor, Case R, EIA 2012-12, 2.0x1.3x1.2mm, Reflow soldering footprint
+capacitor tantalum smd
+0
+2
+2
+SMD
+TC_3216-18_Reflow
+Tantalum capacitor, Case A, EIA 3216-18, 3.2x1.6x1.6mm, Reflow soldering footprint
+capacitor tantalum smd
+0
+2
+2
+SMD
+TC_3528-21_Reflow
+Tantalum capacitor, Case B, EIA 3528-21, 3.5x2.8x1.9mm, Reflow soldering footprint
+capacitor tantalum smd
+0
+2
+2
+SMD
+TC_6032-28_Reflow
+Tantalum capacitor, Case C, EIA 6032-28, 6.0x3.2x2.5mm, Reflow soldering footprint
+capacitor tantalum smd
+0
+2
+2
+SMD
+TQFP-32_7x7mm_Pitch0.8mm
+32-Lead Plastic Thin Quad Flatpack (PT) - 7x7x1.0 mm Body, 2.00 mm [TQFP] (see Microchip Packaging Specification 00000049BS.pdf)
+QFP 0.8
+0
+32
+32
+SMD
+USB-A
+
+
+0
+10
+8
+SMD
+XTAL1_2012
+Resistor SMD 2010, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 2010
+0
+2
+2
+SMD
+XTAL_2012
+Resistor SMD 2010, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 2010
+0
+2
+2
+SMD
+XTAL_5030
+Resistor SMD 2010, reflow soldering, Vishay (see dcrcw.pdf)
+resistor 2010
+0
+2
+2
+SMD
+XXW-2548
+
+
+0
+2
+2
+SMD
+music_3.5mm_PJ215
+
+
+0
+5
+5

@@ -1,0 +1,47 @@
+\documentclass[a4paper]{book}
+\usepackage[top=2cm, outer=2cm, inner=3cm, bottom=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[english, vietnamese]{babel}
+\usepackage{lmodern}
+\usepackage{scrextend}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{setspace}
+\usetikzlibrary{calc, positioning}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{siunitx}
+
+\usepackage[hidelinks, hypertexnames=false]{hyperref}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    columns=fullflexible
+}
+
+\raggedbottom
+
+\begin{document}
+    \include{1.cover}
+    \cleardoublepage
+    \pagestyle{plain}
+    \include{2.front}
+    \pagestyle{plain}
+    \include{3.chapter1}
+    \include{4.chapter2}
+    \include{5.chapter3}
+    \bibliographystyle{ieeetr}
+    \bibliography{references}
+\end{document}

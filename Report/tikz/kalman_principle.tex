@@ -1,0 +1,45 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\begin{document}
+\begin{tikzpicture}[
+    node distance=0.8cm and 1.2cm,
+    box/.style={
+        draw,
+        rectangle,
+        rounded corners,
+        minimum width=3.2cm,
+        minimum height=0.9cm,
+        align=center
+    },
+    arrow/.style={->, >=stealth, thick}
+]
+
+% Các khối
+\node (gyro) [box] {Gyroscope};
+\node (pred) [box, right=of gyro] {Dự đoán\\(Prediction)};
+
+\node (acc) [box, below=1.2cm of gyro] {Accelerometer};
+\node (update) [box, right=of acc] {Cập nhật phép đo\\(Measurement Update)};
+
+\node (kalman) [box, right=2cm of pred, yshift=-0.6cm] 
+{Kalman Filter};
+
+\node (output) [box, right=of kalman] 
+{Góc ước lượng\\sau Kalman};
+
+% Mũi tên
+\draw [arrow] (gyro) -- (pred);
+\draw [arrow] (acc) -- (update);
+
+\draw [arrow] (pred) -- (kalman);
+\draw [arrow] (update) -- (kalman);
+
+\draw [arrow] (kalman) -- (output);
+
+\end{tikzpicture}
+\end{document}
