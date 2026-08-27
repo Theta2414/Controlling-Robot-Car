@@ -21,8 +21,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <string.h>
-
 #include "hc05.h"
 #include "protocol.h"
 #include "motor.h"
@@ -55,12 +53,8 @@ Motor_t motor;
 
 volatile int16_t received_forward = 0;
 volatile int16_t received_turn = 0;
-
 volatile uint32_t valid_packet_count = 0;
-
-volatile uint8_t at_rx[64] = {0};
-volatile uint16_t at_rx_len = 0;
-volatile HAL_StatusTypeDef at_tx_status;
+volatile uint32_t last_packet_tick = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,35 +68,7 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static void HC05_AT_Command(const char *cmd)
-{
-    at_rx_len = 0;
 
-    memset((void *)at_rx, 0, sizeof(at_rx));
-
-    at_tx_status =
-        HAL_UART_Transmit(&huart1,
-                          (uint8_t *)cmd,
-                          strlen(cmd),
-                          100);
-
-    while (at_rx_len < sizeof(at_rx) - 1)
-    {
-        uint8_t byte;
-
-        if (HAL_UART_Receive(&huart1,
-                             &byte,
-                             1,
-                             100) == HAL_OK)
-        {
-            at_rx[at_rx_len++] = byte;
-        }
-        else
-        {
-            break;
-        }
-    }
-}
 /* USER CODE END 0 */
 
 /**
@@ -142,9 +108,11 @@ int main(void)
 
   if (Motor_Init(&motor, &htim2) != HAL_OK)
   {
-      Error_Handler();
+    Error_Handler();
   }
-  //HC05_AT_Command("AT+ADDR?\r\n");
+
+  /* STBY of both TB6612FNG drivers is tied directly to 3.3 V in hardware. */
+  last_packet_tick = HAL_GetTick();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -154,35 +122,41 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    // uint8_t rx_byte;
+    uint8_t rx_byte;
 
-    // if (HC05_Receive(&hc05,
-    //                 &rx_byte,
-    //                 1,
-    //                 10) == HAL_OK)
-    // {
-    //     int16_t forward;
-    //     int16_t turn;
+    if (HC05_Receive(&hc05,
+                     &rx_byte,
+                     1,
+                     10) == HAL_OK)
+    {
+      int16_t forward;
+      int16_t turn;
 
-    //     if (ProtocolRx_PushByte(&protocol_rx,
-    //                             rx_byte,
-    //                             &forward,
-    //                             &turn))
-    //     {
-    //         received_forward = forward;
-    //         received_turn = turn;
+      if (ProtocolRx_PushByte(&protocol_rx,
+                              rx_byte,
+                              &forward,
+                              &turn))
+      {
+        received_forward = forward;
+        received_turn = turn;
 
-    //         valid_packet_count++;
-    //         Motor_SetControl(&motor,
-    //                         received_forward,
-    //                         received_turn);
-    //     }
-    // }
-    Motor_SetControl(&motor, 60, 0);
+        valid_packet_count++;
+        last_packet_tick = HAL_GetTick();
 
-    HAL_Delay(1000);
+        Motor_SetControl(&motor,
+                         received_forward,
+                         received_turn);
+      }
+    }
+
+    /* Failsafe: stop the car if Bluetooth packets disappear for >300 ms. */
+    if ((HAL_GetTick() - last_packet_tick) > 300U)
+    {
+      Motor_Stop(&motor);
+      received_forward = 0;
+      received_turn = 0;
+    }
   }
-  // HAL_Delay(1000);
   /* USER CODE END 3 */
 }
 
@@ -334,26 +308,26 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, A2IN1_Pin|A2IN2_Pin|B2IN1_Pin|B2IN2_Pin
-                          |A1IN1_Pin|A1IN2_Pin|B1IN1_Pin|B1IN2_Pin, GPIO_PIN_RESET);
+                          |A1IN2_Pin|B1IN1_Pin|B1IN2_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(STBY_GPIO_Port, STBY_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(A1IN1_GPIO_Port, A1IN1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : A2IN1_Pin A2IN2_Pin B2IN1_Pin B2IN2_Pin
-                           A1IN1_Pin A1IN2_Pin B1IN1_Pin B1IN2_Pin */
+                           A1IN2_Pin B1IN1_Pin B1IN2_Pin */
   GPIO_InitStruct.Pin = A2IN1_Pin|A2IN2_Pin|B2IN1_Pin|B2IN2_Pin
-                          |A1IN1_Pin|A1IN2_Pin|B1IN1_Pin|B1IN2_Pin;
+                          |A1IN2_Pin|B1IN1_Pin|B1IN2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : STBY_Pin */
-  GPIO_InitStruct.Pin = STBY_Pin;
+  /*Configure GPIO pin : A1IN1_Pin */
+  GPIO_InitStruct.Pin = A1IN1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(STBY_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(A1IN1_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

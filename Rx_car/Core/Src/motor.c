@@ -112,10 +112,10 @@ HAL_StatusTypeDef Motor_Init(Motor_t *motor,
         return HAL_ERROR;
     }
 
-    /* Enable both TB6612 */
-    HAL_GPIO_WritePin(STBY_GPIO_Port,
-                      STBY_Pin,
-                      GPIO_PIN_SET);
+    // /* Enable both TB6612 */
+    // HAL_GPIO_WritePin(STBY_GPIO_Port,
+    //                   STBY_Pin,
+    //                   GPIO_PIN_SET);
 
     Motor_Stop(motor);
 

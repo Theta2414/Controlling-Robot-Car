@@ -1,40 +1,50 @@
 #include "control.h"
 
-#define CONTROL_DEADZONE_DEG   5.0f
-#define CONTROL_MAX_ANGLE_DEG  45.0f
-#define CONTROL_MAX_OUTPUT     100
+#include <math.h>
 
+#define CONTROL_DEADZONE_DEG   8.0f
+#define CONTROL_MAX_ANGLE_DEG  60.0f
+#define CONTROL_MAX_OUTPUT     80.0f
 
 static int16_t angle_to_control(float angle)
 {
-    /* Deadzone around neutral */
-    if (angle > -CONTROL_DEADZONE_DEG &&
-        angle <  CONTROL_DEADZONE_DEG)
+    float abs_angle = fabsf(angle);
+
+    /* Neutral zone */
+    if (abs_angle <= CONTROL_DEADZONE_DEG)
     {
         return 0;
     }
 
     /* Saturation */
-    if (angle > CONTROL_MAX_ANGLE_DEG)
+    if (abs_angle >= CONTROL_MAX_ANGLE_DEG)
     {
-        angle = CONTROL_MAX_ANGLE_DEG;
+        return (angle > 0.0f)
+             ? CONTROL_MAX_OUTPUT
+             : -CONTROL_MAX_OUTPUT;
     }
 
-    if (angle < -CONTROL_MAX_ANGLE_DEG)
-    {
-        angle = -CONTROL_MAX_ANGLE_DEG;
-    }
-
-    /* -45 ... +45 deg
-     *       ↓
-     * -100 ... +100
+    /*
+     * Normalize:
+     * 8 deg  -> 0
+     * 60 deg -> 1
      */
-    return (int16_t)(
-        angle * CONTROL_MAX_OUTPUT
-        / CONTROL_MAX_ANGLE_DEG
-    );
-}
+    float normalized =
+        (abs_angle - CONTROL_DEADZONE_DEG) /
+        (CONTROL_MAX_ANGLE_DEG - CONTROL_DEADZONE_DEG);
 
+    /*
+     * Expo response:
+     * less sensitive near center,
+     * stronger response near max tilt.
+     */
+    normalized = normalized * normalized;
+
+    int16_t output =
+        (int16_t)(normalized * CONTROL_MAX_OUTPUT);
+
+    return (angle > 0.0f) ? output : -output;
+}
 
 void Control_Update(Control_t *control,
                     float pitch_deg,
