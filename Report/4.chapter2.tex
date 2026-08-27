@@ -106,7 +106,7 @@ Quy trình vận hành khép kín của hệ thống diễn ra liên tục theo 
     \[ \theta = \mathrm{atan2}(A_x, \sqrt{A_y^2 + A_z^2}) \times \frac{180}{\pi} \]
     \[ \phi = \mathrm{atan2}(A_y, \sqrt{A_x^2 + A_z^2}) \times \frac{180}{\pi} \]
     Sau khi áp dụng bộ lọc dải chết (Deadzone) để loại bỏ rung lắc tay nhẹ, STM32 phân loại góc nghiêng thành các lệnh di chuyển tương ứng và gửi gói tin qua UART đến module Bluetooth HC-05 (Master).
-    \item \textbf{Khối thu}: Module Bluetooth HC-05 (Slave) nhận sóng RF và chuyển tiếp gói dữ liệu đến STM32 khối thu qua UART. Vi điều khiển giải mã gói tin, kiểm tra tính hợp lệ và cập nhật trạng thái hoạt động của xe. Đồng thời, một cơ chế kiểm tra thời gian chờ (Timeout) liên tục giám sát trạng thái kết nối. Nếu quá 1.5 giây không nhận được gói tin mới, hệ thống tự động kích hoạt chế độ Fail-safe để bảo vệ an toàn cho xe.
+    \item \textbf{Khối thu}: Module Bluetooth HC-05 (Slave) nhận sóng RF và chuyển tiếp gói dữ liệu đến STM32 khối thu qua UART. Vi điều khiển giải mã gói tin, kiểm tra tính hợp lệ và cập nhật trạng thái hoạt động của xe. Đồng thời, một cơ chế kiểm tra thời gian chờ (Timeout) liên tục giám sát trạng thái kết nối. Nếu quá 0.3 giây (300 ms) không nhận được gói tin mới, hệ thống tự động kích hoạt chế độ Fail-safe để bảo vệ an toàn cho xe.
 \end{enumerate}
 
 \subsection{Lưu đồ giải thuật hệ thống}
@@ -118,7 +118,7 @@ Thuật toán khối phát hoạt động theo mô hình vòng lặp vô hạn (
     \item Khởi tạo hệ thống: Thiết lập GPIO, cấu hình giao tiếp I2C1 và USART1, cấu hình dải đo gia tốc cho MPU6050.
     \item Đọc dữ liệu cảm biến: Đọc 6 byte dữ liệu gia tốc hướng trục từ MPU6050.
     \item Tính toán góc nghiêng: Áp dụng công thức hàm lượng giác để xác định góc Pitch và Roll.
-    \item Xử lý dải chết (Deadzone): Nếu góc nghiêng nhỏ hơn $15^\circ$, coi như tay nằm ngang (Lệnh Dừng). Nếu vượt quá $25^\circ$, bắt đầu tính toán lệnh di chuyển và ánh xạ góc nghiêng sang mức tốc độ PWM tương ứng.
+    \item Xử lý dải chết (Deadzone): Nếu góc nghiêng nhỏ hơn $8^\circ$, coi như tay nằm ngang (Lệnh Dừng). Nếu vượt quá $8^\circ$, hệ thống bắt đầu tính toán giá trị điều khiển và ánh xạ góc nghiêng sang mức tốc độ PWM tương ứng theo hàm phi tuyến.
     \item Truyền dữ liệu: Đóng gói ký tự điều khiển (tiến, lùi, trái, phải, dừng) và gửi ra cổng USART1.
     \item Trì hoãn (Delay): Chờ \qty{50}{\milli\second} trước khi lặp lại chu kỳ mới.
 \end{itemize}
@@ -129,7 +129,7 @@ Thuật toán khối thu hoạt động kết hợp giữa ngắt nhận dữ li
     \item Khởi tạo hệ thống: Thiết lập các chân điều hướng động cơ (GPIO Output), cấu hình bộ định thời Timer 2 phát xung PWM điều tốc, cấu hình ngắt nhận dữ liệu UART (USART1).
     \item Vòng lặp chính:
     \begin{itemize}
-        \item Liên tục kiểm tra biến đếm thời gian (Timeout Counter). Nếu thời gian trôi qua từ lần nhận gói tin cuối cùng vượt quá \qty{1500}{\milli\second}, hệ thống tự động đưa xe về trạng thái dừng khẩn cấp (Fail-Safe), tắt xung PWM và ngắt dòng động cơ.
+        \item Liên tục kiểm tra biến đếm thời gian (Timeout Counter). Nếu thời gian trôi qua từ lần nhận gói tin cuối cùng vượt quá \qty{300}{\milli\second}, hệ thống tự động đưa xe về trạng thái dừng khẩn cấp (Fail-Safe), tắt xung PWM và ngắt dòng động cơ.
         \item Khi nhận được ký tự điều khiển hợp lệ qua ngắt UART: Cập nhật lệnh di chuyển, đặt lại biến đếm thời gian về 0, điều chỉnh các chân GPIO hướng quay và thay đổi chu kỳ nhiệm vụ (Duty Cycle) của xung PWM để thay đổi tốc độ động cơ theo yêu cầu điều tốc.
     \end{itemize}
 \end{itemize}
@@ -156,7 +156,7 @@ Thuật toán khối thu hoạt động kết hợp giữa ngắt nhận dữ li
     \item \textbf{STATE\_BACKWARD (Trạng thái lùi):} Xe di chuyển lùi về sau. Kích hoạt khi góc Pitch hướng về phía sau vượt ngưỡng.
     \item \textbf{STATE\_LEFT (Trạng thái rẽ trái):} Xe rẽ trái bằng cách quay ngược chiều giữa hai bên bánh xe hoặc giảm tốc độ bên trái, tăng tốc độ bên phải. Kích hoạt khi góc Roll nghiêng sang trái.
     \item \textbf{STATE\_RIGHT (Trạng thái rẽ phải):} Xe rẽ phải bằng cách giảm tốc độ bên phải, tăng tốc độ bên trái. Kích hoạt khi góc Roll nghiêng sang phải.
-    \item \textbf{STATE\_FAIL\_SAFE (Trạng thái dừng an toàn):} Trạng thái khẩn cấp kích hoạt ngay lập tức khi mất tín hiệu kết nối Bluetooth giữa khối phát và khối thu quá thời gian quy định (1.5 giây). Trạng thái này có độ ưu tiên cao nhất, lập tức khóa đầu ra động cơ và chỉ cho phép chuyển sang trạng thái \textbf{STATE\_STOP} khi kết nối Bluetooth được thiết lập lại thành công.
+    \item \textbf{STATE\_FAIL\_SAFE (Trạng thái dừng an toàn):} Trạng thái khẩn cấp kích hoạt ngay lập tức khi mất tín hiệu kết nối Bluetooth giữa khối phát và khối thu quá thời gian quy định (0.3 giây hoặc 300 ms). Trạng thái này có độ ưu tiên cao nhất, lập tức khóa đầu ra động cơ và chỉ cho phép chuyển sang trạng thái \textbf{STATE\_STOP} khi kết nối Bluetooth được thiết lập lại thành công.
 \end{enumerate}
 
 Dưới đây là bảng chuyển đổi trạng thái của hệ thống điều khiển:
@@ -171,19 +171,19 @@ Dưới đây là bảng chuyển đổi trạng thái của hệ thống điề
 \hline
 \textbf{Trạng thái hiện tại} & \textbf{Trạng thái tiếp theo} & \textbf{Điều kiện chuyển trạng thái} & \textbf{Hành động thực hiện} \\
 \hline
-Mọi trạng thái & STATE\_FAIL\_SAFE & Mất kết nối Bluetooth quá 1.5 giây & Tắt PWM (0\%), dừng khẩn cấp xe \\
+Mọi trạng thái & STATE\_FAIL\_SAFE & Mất kết nối Bluetooth quá 0.3 giây (300 ms) & Tắt PWM (0\%), dừng khẩn cấp xe \\
 \hline
 STATE\_FAIL\_SAFE & STATE\_STOP & Kết nối Bluetooth được khôi phục & Reset bộ đệm, chờ lệnh mới \\
 \hline
-STATE\_STOP & STATE\_FORWARD & Góc Pitch tay cầm $> 25^\circ$ & Xuất GPIO tiến, phát PWM điều tốc \\
+STATE\_STOP & STATE\_FORWARD & Góc Pitch tay cầm $> 8^\circ$ & Xuất GPIO tiến, phát PWM điều tốc \\
 \hline
-STATE\_STOP & STATE\_BACKWARD & Góc Pitch tay cầm $< -25^\circ$ & Xuất GPIO lùi, phát PWM điều tốc \\
+STATE\_STOP & STATE\_BACKWARD & Góc Pitch tay cầm $< -8^\circ$ & Xuất GPIO lùi, phát PWM điều tốc \\
 \hline
-STATE\_STOP & STATE\_LEFT & Góc Roll tay cầm $< -25^\circ$ & Xuất GPIO rẽ trái, phát PWM điều tốc \\
+STATE\_STOP & STATE\_LEFT & Góc Roll tay cầm $< -8^\circ$ & Xuất GPIO rẽ trái, phát PWM điều tốc \\
 \hline
-STATE\_STOP & STATE\_RIGHT & Góc Roll tay cầm $> 25^\circ$ & Xuất GPIO rẽ phải, phát PWM điều tốc \\
+STATE\_STOP & STATE\_RIGHT & Góc Roll tay cầm $> 8^\circ$ & Xuất GPIO rẽ phải, phát PWM điều tốc \\
 \hline
-STATE\_FORWARD / BACKWARD / LEFT / RIGHT & STATE\_STOP & Góc Pitch và Roll nằm trong dải chết ($\pm 15^\circ$) & Tắt xung PWM, dừng động cơ xe \\
+STATE\_FORWARD / BACKWARD / LEFT / RIGHT & STATE\_STOP & Góc Pitch và Roll nằm trong dải chết ($\pm 8^\circ$) & Tắt xung PWM, dừng động cơ xe \\
 \hline
 \end{tabularx}
 \end{table}

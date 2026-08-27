@@ -997,46 +997,44 @@ Sau khi có góc Pitch và Roll sau Kalman, hệ thống chuyển đổi chúng 
 
 Khoảng góc hoạt động được giới hạn:
 \begin{equation}
--45^\circ \leq \theta \leq +45^\circ
+-60^\circ \leq \theta \leq +60^\circ
 \end{equation}
 và được ánh xạ sang:
 \begin{equation}
--100 \leq u \leq +100
+-80 \leq u \leq +80
 \end{equation}
-trong đó $u$ là giá trị điều khiển.
+trong đó $u$ là giá trị điều khiển (giới hạn ở mức 80\% công suất tối đa để bảo vệ cơ cấu chấp hành).
 
 Hệ thống đồng thời sử dụng vùng chết:
 \begin{equation}
--5^\circ < \theta < +5^\circ
+-8^\circ < \theta < +8^\circ
 \end{equation}
 Trong vùng này, tín hiệu điều khiển được đặt bằng 0 nhằm tránh robot phản ứng với các dao động nhỏ của góc.
 
-Mối quan hệ giữa góc và giá trị điều khiển được mô tả:
+Mối quan hệ giữa góc và giá trị điều khiển được mô tả bằng hàm phi tuyến bậc hai (Exponential Response), giúp hệ thống tay lái hoạt động mượt mà ở góc nghiêng nhỏ và nhạy ở góc nghiêng lớn:
 \begin{equation}
-u=
-\frac{\theta}{45}
-\times100
+u = \mathrm{sign}(\theta) \times \left( \frac{|\theta| - 8}{60 - 8} \right)^2 \times 80
 \end{equation}
 với điều kiện:
 \begin{equation}
-|\theta|\leq45^\circ
+8^\circ \leq |\theta| \leq 60^\circ
 \end{equation}
 
-Bảng sau minh họa quá trình ánh xạ:
+Bảng sau minh họa quá trình ánh xạ mẫu theo công thức trên:
 \begin{table}[H]
     \centering
     \renewcommand{\arraystretch}{1.3}
-    \caption{Ánh xạ góc nghiêng sang giá trị điều khiển}
+    \caption{Ánh xạ góc nghiêng sang giá trị điều khiển thực tế}
     \label{tab:angle-control}
     \begin{tabular}{c r @{} l}
         \toprule
         \textbf{Góc nghiêng} & \multicolumn{2}{c}{\textbf{Giá trị điều khiển}} \\
         \centering
-        $-45^\circ$ & $-$ & $100$ \\
-        $-22.5^\circ$ & $-$ & $50$ \\
+        $-60^\circ$ & $-$ & $80$ \\
+        $-34^\circ$ & $-$ & $20$ \\
         $0^\circ$ & & $0$ \\
-        $+22.5^\circ$ & $+$ & $50$ \\
-        $+45^\circ$ & $+$ & $100$ \\
+        $+34^\circ$ & $+$ & $20$ \\
+        $+60^\circ$ & $+$ & $80$ \\
         \bottomrule
     \end{tabular}
 \end{table}
