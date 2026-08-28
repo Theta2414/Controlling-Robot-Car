@@ -35,7 +35,7 @@ Mục tiêu tổng quát của đề tài là thiết kế, lập trình và ch�
     \item Hệ thống sử dụng dòng vi điều khiển 32-bit ARM Cortex-M3 (STM32F103C8T6) làm bộ xử lý trung tâm cho cả khối phát và khối thu.
     \item Giao tiếp cảm biến MPU6050 thực hiện qua chuẩn I2C, truyền thông không dây qua module Bluetooth HC-05 cấu hình ở chế độ Master-Slave (giao tiếp UART với tốc độ BaudRate chuẩn).
     \item Việc điều khiển động cơ DC chổi than sử dụng mạch cầu H điều khiển động cơ TB6612FNG với tín hiệu điều rộng xung PWM để kiểm soát tốc độ và GPIO để điều khiển chiều quay.
-    \item Không tích hợp các thuật toán lọc nhiễu hay tính toán động học phức tạp (như bộ lọc Kalman đầy đủ, bộ điều khiển PID cho động cơ).
+    \item Tích hợp bộ lọc Kalman để lọc nhiễu và ước lượng chính xác góc nghiêng Pitch và Roll từ cảm biến MPU6050; không tích hợp bộ điều khiển PID cho động cơ.
     \item Xe robot chỉ thực hiện các chuyển động cơ bản được điều hướng trực tiếp bởi người dùng thông qua góc nghiêng tay cầm, không tích hợp các cảm biến tự hành (như cảm biến siêu âm tránh vật cản, cảm biến dò đường line).
 \end{itemize}
 

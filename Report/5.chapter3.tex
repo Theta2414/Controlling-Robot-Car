@@ -59,10 +59,10 @@ MPU6050 hỗ trợ nhiều mức thang đo cho accelerometer \cite{mpu6050-datas
 \begin{tabular}{|c|c|}
 \hline
 \textbf{Phạm vi đo} & \textbf{Độ nhạy} \\ \hline
-$\pm 2g$  & $16384\ \text{LSB}/g$ \\ \hline
-$\pm 4g$  & $8192\ \text{LSB}/g$ \\ \hline
-$\pm 8g$  & $4096\ \text{LSB}/g$ \\ \hline
-$\pm 16g$ & $2048\ \text{LSB}/g$ \\ \hline
+\qty{\pm 2}{\g}  & \qty{16384}{LSB/\g} \\ \hline
+\qty{\pm 4}{\g}  & \qty{8192}{LSB/\g} \\ \hline
+\qty{\pm 8}{\g}  & \qty{4096}{LSB/\g} \\ \hline
+\qty{\pm 16}{\g} & \qty{2048}{LSB/\g} \\ \hline
 \end{tabular}
 \caption{Độ nhạy của cảm biến gia tốc MPU6050}
 \label{tab:mpu6050_accel_sensitivity}
@@ -116,10 +116,10 @@ Trong hệ thống, gyroscope có thể được cấu hình ở nhiều mức t
 \begin{tabular}{|c|c|}
 \hline
 \textbf{Phạm vi đo} & \textbf{Độ nhạy} \\ \hline
-$\pm 250\,^\circ/\text{s}$  & $131\,\text{LSB}/(^{\circ}/\text{s})$ \\ \hline
-$\pm 500\,^\circ/\text{s}$  & $65.5\,\text{LSB}/(^{\circ}/\text{s})$ \\ \hline
-$\pm 1000\,^\circ/\text{s}$ & $32.8\,\text{LSB}/(^{\circ}/\text{s})$ \\ \hline
-$\pm 2000\,^\circ/\text{s}$ & $16.4\,\text{LSB}/(^{\circ}/\text{s})$ \\ \hline
+\qty{\pm 250}{\degree\per\second}  & \qty{131}{LSB/(\degree/\second)} \\ \hline
+\qty{\pm 500}{\degree\per\second}  & \qty{65.5}{LSB/(\degree/\second)} \\ \hline
+\qty{\pm 1000}{\degree\per\second} & \qty{32.8}{LSB/(\degree/\second)} \\ \hline
+\qty{\pm 2000}{\degree\per\second} & \qty{16.4}{LSB/(\degree/\second)} \\ \hline
 \end{tabular}
 \caption{Độ nhạy của Gyroscope theo phạm vi đo}
 \end{table}
@@ -127,7 +127,7 @@ $\pm 2000\,^\circ/\text{s}$ & $16.4\,\text{LSB}/(^{\circ}/\text{s})$ \\ \hline
 Trong hệ thống này, gyroscope được cấu hình ở mức:
 
 \begin{equation}
-\pm 250^\circ/\text{s}
+\qty{\pm 250}{\degree\per\second}
 \end{equation}
 
 với độ nhạy:
@@ -136,7 +136,7 @@ với độ nhạy:
 \qty{131}{LSB/(\degree/\second)}
 \end{equation}
 
-Mức $\pm 250^\circ/\text{s}$ được lựa chọn vì hệ thống chủ yếu cần theo dõi sự thay đổi góc nghiêng của thiết bị điều khiển, không yêu cầu đo các chuyển động quay có vận tốc góc quá lớn. Việc sử dụng thang đo nhỏ giúp tăng độ nhạy của phép đo trong phạm vi hoạt động của hệ thống.
+Mức \qty{\pm 250}{\degree\per\second} được lựa chọn vì hệ thống chủ yếu cần theo dõi sự thay đổi góc nghiêng của thiết bị điều khiển, không yêu cầu đo các chuyển động quay có vận tốc góc quá lớn. Việc sử dụng thang đo nhỏ giúp tăng độ nhạy của phép đo trong phạm vi hoạt động của hệ thống.
 
 Vận tốc góc được chuyển đổi từ giá trị raw theo:
 
@@ -771,10 +771,10 @@ Roll_{\text{offset}}
 
 Nhờ đó, tư thế ban đầu của thiết bị được quy ước là:
 \begin{equation}
-Pitch\approx0^\circ
+Pitch\approx\qty{0}{\degree}
 \end{equation}
 \begin{equation}
-Roll\approx0^\circ
+Roll\approx\qty{0}{\degree}
 \end{equation}
 
 Điều kiện quan trọng của quá trình calibration là MPU6050 phải được giữ ổn định trong suốt thời gian lấy mẫu.
@@ -789,15 +789,15 @@ Roll\approx0^\circ
 Trong hệ thống, ba tham số chính của bộ lọc được sử dụng là:
 
 \begin{equation}
-Q_{\text{angle}}=0.001
+Q_{\text{angle}} = \num{0.001}
 \end{equation}
 
 \begin{equation}
-Q_{\text{bias}}=0.003
+Q_{\text{bias}} = \num{0.003}
 \end{equation}
 
 \begin{equation}
-R_{\text{measure}}=0.03
+R_{\text{measure}} = \num{0.03}
 \end{equation}
 
 \begin{table}[H]
@@ -810,16 +810,16 @@ R_{\text{measure}}=0.03
         & \textbf{Giá trị}
         & \textbf{Ý nghĩa} \\
         \midrule
-        $Q_{\text{angle}}$
-        & 0.001
+        \(Q_{\text{angle}}\)
+        & \num{0.001}
         & Mức độ không chắc chắn của mô hình góc \\
 
-        $Q_{\text{bias}}$
-        & 0.003
+        \(Q_{\text{bias}}\)
+        & \num{0.003}
         & Mức độ biến thiên được giả định của bias gyroscope \\
 
-        $R_{\text{measure}}$
-        & 0.03
+        \(R_{\text{measure}}\)
+        & \num{0.03}
         & Mức độ nhiễu của measurement từ accelerometer \\
         \bottomrule
     \end{tabular}
@@ -837,7 +837,7 @@ Tăng $Q_{\text{bias}}$ cho phép bộ lọc thích nghi nhanh hơn với sự t
 
 \subsection{Ảnh hưởng của \texorpdfstring{$R_{\text{measure}}$}{R\_measure}}
 
-Nếu tăng $R_{\text{measure}}$, measurement từ accelerometer được xem là nhiều nhiễu hơn. Bộ lọc sẽ giảm mức độ tin tưởng vào accelerometer và duy trì nhiều hơn thông tin từ prediction. Nếu giảm $R_{\text{measure}}$, accelerometer được xem là đáng tin cậy hơn và ảnh hưởng mạnh hơn đến kết quả. Do đó, tuning các tham số $Q$ và $R$ cần được thực hiện dựa trên đặc tính thực tế của cảm biến cũng như yêu cầu về độ mượt và tốc độ đáp ứng của  obot.
+Nếu tăng $R_{\text{measure}}$, measurement từ accelerometer được xem là nhiều nhiễu hơn. Bộ lọc sẽ giảm mức độ tin tưởng vào accelerometer và duy trì nhiều hơn thông tin từ prediction. Nếu giảm $R_{\text{measure}}$, accelerometer được xem là đáng tin cậy hơn và ảnh hưởng mạnh hơn đến kết quả. Do đó, tuning các tham số $Q$ và $R$ cần được thực hiện dựa trên đặc tính thực tế của cảm biến cũng như yêu cầu về độ mượt và tốc độ đáp ứng của robot.
 
 % =========================================================
 % DT
@@ -871,7 +871,7 @@ Giá trị $\Delta t$ được sử dụng trực tiếp trong bước predictio
 
 Do thời gian thực hiện các tác vụ trong vòng lặp có thể thay đổi, $\Delta t$ không được xem là một giá trị cố định mà được tính toán lại ở mỗi chu kỳ xử lý dựa trên thời gian thực tế giữa hai lần cập nhật liên tiếp.
 
-Vòng lặp chính được thiết lập với khoảng thời gian xử lý mục tiêu khoảng $10$ ms. Do đó, tần số xử lý của vòng lặp có thể được ước tính xấp xỉ:
+Vòng lặp chính được thiết lập với khoảng thời gian xử lý mục tiêu khoảng \qty{10}{\ms}. Do đó, tần số xử lý của vòng lặp có thể được ước tính xấp xỉ:
 \begin{equation}
 f_{\text{loop}}
 \approx
@@ -884,7 +884,7 @@ Trong khi đó, MPU6050 được cấu hình với tần số lấy mẫu:
 f_{\text{MPU6050}}=\qty{100}{\hertz}
 \end{equation}
 
-Như vậy, cảm biến và vòng lặp chính đều được thiết lập ở cùng tần số. Trong chương trình hiện tại, dữ liệu cảm biến được đọc và đưa vào Kalman Filter với tần số xử lý mục tiêu khoảng $100$ Hz, trong khi giá trị $\Delta t$ được sử dụng trong bộ lọc vẫn được xác định dựa trên thời gian thực tế giữa hai lần cập nhật.
+Như vậy, cảm biến và vòng lặp chính đều được thiết lập ở cùng tần số. Trong chương trình hiện tại, dữ liệu cảm biến được đọc và đưa vào Kalman Filter với tần số xử lý mục tiêu khoảng \qty{100}{\hertz}, trong khi giá trị $\Delta t$ được sử dụng trong bộ lọc vẫn được xác định dựa trên thời gian thực tế giữa hai lần cập nhật.
 
 % =========================================================
 % LUỒNG XỬ LÝ
@@ -997,17 +997,17 @@ Sau khi có góc Pitch và Roll sau Kalman, hệ thống chuyển đổi chúng 
 
 Khoảng góc hoạt động được giới hạn:
 \begin{equation}
--60^\circ \leq \theta \leq +60^\circ
+\qty{-60}{\degree} \leq \theta \leq \qty{60}{\degree}
 \end{equation}
 và được ánh xạ sang:
 \begin{equation}
 -80 \leq u \leq +80
 \end{equation}
-trong đó $u$ là giá trị điều khiển (giới hạn ở mức 80\% công suất tối đa để bảo vệ cơ cấu chấp hành).
+trong đó $u$ là giá trị điều khiển (giới hạn ở mức \qty{80}{\percent} công suất tối đa để bảo vệ cơ cấu chấp hành).
 
 Hệ thống đồng thời sử dụng vùng chết:
 \begin{equation}
--8^\circ < \theta < +8^\circ
+\qty{-8}{\degree} < \theta < \qty{8}{\degree}
 \end{equation}
 Trong vùng này, tín hiệu điều khiển được đặt bằng 0 nhằm tránh robot phản ứng với các dao động nhỏ của góc.
 
@@ -1017,7 +1017,7 @@ u = \mathrm{sign}(\theta) \times \left( \frac{|\theta| - 8}{60 - 8} \right)^2 \t
 \end{equation}
 với điều kiện:
 \begin{equation}
-8^\circ \leq |\theta| \leq 60^\circ
+\qty{8}{\degree} \leq |\theta| \leq \qty{60}{\degree}
 \end{equation}
 
 Bảng sau minh họa quá trình ánh xạ mẫu theo công thức trên:
@@ -1030,11 +1030,11 @@ Bảng sau minh họa quá trình ánh xạ mẫu theo công thức trên:
         \toprule
         \textbf{Góc nghiêng} & \multicolumn{2}{c}{\textbf{Giá trị điều khiển}} \\
         \centering
-        $-60^\circ$ & $-$ & $80$ \\
-        $-34^\circ$ & $-$ & $20$ \\
-        $0^\circ$ & & $0$ \\
-        $+34^\circ$ & $+$ & $20$ \\
-        $+60^\circ$ & $+$ & $80$ \\
+        \qty{-60}{\degree} & $-$ & \num{80} \\
+        \qty{-34}{\degree} & $-$ & \num{20} \\
+        \qty{0}{\degree} & & \num{0} \\
+        \qty{34}{\degree} & $+$ & \num{20} \\
+        \qty{60}{\degree} & $+$ & \num{80} \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -1053,6 +1053,15 @@ f(Roll_{\text{kalman}})
 \end{equation}
 
 Điều này tạo ra mối liên hệ trực tiếp giữa góc nghiêng sau Kalman và giá trị điều khiển tiến/lùi hoặc rẽ của hệ thống.
+
+Sau khi nhận được giá trị điều khiển $F$ ($control_{\text{forward}}$) và $T$ ($control_{\text{turn}}$) từ khối phát, khối thu tiến hành thuật toán phối trộn vi sai để xác định tốc độ của các bánh xe bên trái ($V_{\text{left}}$) và bên phải ($V_{\text{right}}$):
+\begin{equation}
+V_{\text{left}} = \text{clamp}(F + T, \num{-100}, \num{100})
+\end{equation}
+\begin{equation}
+V_{\text{right}} = \text{clamp}(F - T, \num{-100}, \num{100})
+\end{equation}
+Trong đó, hàm $\text{clamp}(val, \num{-100}, \num{100})$ thực hiện giới hạn giá trị tốc độ bánh xe trong phạm vi từ \num{-100} đến \num{100} (tương ứng chu kỳ nhiệm vụ xung PWM từ \qty{-100}{\percent} đến \qty{100}{\percent}). Hướng quay của từng bánh xe sẽ được quyết định bởi dấu của $V_{\text{left}}$ và $V_{\text{right}}$ thông qua các chân GPIO điều khiển chiều của driver cầu H, và tốc độ bánh xe được điều khiển bằng độ rộng xung PWM tỉ lệ với giá trị tuyệt đối của chúng.
 
 % =========================================================
 % THUẬT NGỮ

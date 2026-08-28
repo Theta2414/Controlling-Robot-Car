@@ -11,7 +11,7 @@ Nhóm xin cam đoan rằng báo cáo này là kết quả của quá trình nghi
 \addcontentsline{toc}{chapter}{Lời cảm ơn}
 \chapter*{Lời cảm ơn}
 
-Nhóm em xin được gửi lời cảm ơn đến Mentor Phạm Quang Vinh đã hướng dẫn, hỗ trợ và đưa ra những góp ý hữu ích trong quá trình thực hiện báo cáo này, cũng như HCMUT MLIoT Lab đã luôn đồng hành và truyền tải những kiến thức hữu ích của môn học. Những đóng góp của HCMUT MLIoT Lab và Mentor đã góp phần giúp nhóm em hoàn thành được trọn vẹn môn học.
+Nhóm em xin được gửi lời cảm ơn đến Mentor Võ Quang Vinh đã hướng dẫn, hỗ trợ và đưa ra những góp ý hữu ích trong quá trình thực hiện báo cáo này, cũng như HCMUT MLIoT Lab đã luôn đồng hành và truyền tải những kiến thức hữu ích của môn học. Những đóng góp của HCMUT MLIoT Lab và Mentor đã góp phần giúp nhóm em hoàn thành được trọn vẹn môn học.
 
 \phantomsection
 \addcontentsline{toc}{chapter}{Tóm tắt đề tài}
@@ -19,7 +19,7 @@ Nhóm em xin được gửi lời cảm ơn đến Mentor Phạm Quang Vinh đã
 
 Đề tài tập trung vào việc thiết kế và chế tạo một hệ thống xe robot điều khiển không dây dựa trên góc nghiêng của thiết bị điều khiển, nhằm tạo ra phương thức tương tác trực quan và thuận tiện hơn so với các phương pháp điều khiển truyền thống bằng nút bấm hoặc joystick. Hệ thống sử dụng cảm biến quán tính MPU6050 để thu thập dữ liệu chuyển động và xác định góc nghiêng của thiết bị điều khiển. Vi điều khiển STM32F103 thực hiện xử lý dữ liệu từ cảm biến, tính toán góc nghiêng và chuyển đổi thông tin này thành tín hiệu điều khiển.
 
-Dữ liệu điều khiển được truyền không dây thông qua module Bluetooth HC-05 và giao tiếp UART đến xe robot. Tại phía xe, vi điều khiển tiếp nhận dữ liệu và điều khiển hai driver động cơ để vận hành bốn động cơ DC, cho phép xe thực hiện các chuyển động tiến, lùi và rẽ tương ứng với thao tác nghiêng của thiết bị điều khiển. Tốc độ và hướng di chuyển của xe được điều chỉnh thông qua phương pháp điều chế độ rộng xung (PWM). Đề tài tập trung vào việc xây dựng và kiểm tra prototype trong điều kiện địa hình bằng phẳng, không phát triển các chức năng tự hành và không sử dụng các thuật toán lọc nhiễu phức tạp.
+Dữ liệu điều khiển được truyền không dây thông qua module Bluetooth HC-05 và giao tiếp UART đến xe robot. Tại phía xe, vi điều khiển tiếp nhận dữ liệu và điều khiển hai driver động cơ để vận hành bốn động cơ DC, cho phép xe thực hiện các chuyển động tiến, lùi và rẽ tương ứng với thao tác nghiêng của thiết bị điều khiển. Tốc độ và hướng di chuyển của xe được điều chỉnh thông qua phương pháp điều chế độ rộng xung (PWM). Đề tài tập trung vào việc xây dựng và kiểm tra prototype trong điều kiện địa hình bằng phẳng, không phát triển các chức năng tự hành và sử dụng bộ lọc Kalman để lọc nhiễu và ước lượng chính xác góc nghiêng Pitch và Roll từ cảm biến MPU6050.
 
 \phantomsection
 \addcontentsline{toc}{chapter}{Mục lục}

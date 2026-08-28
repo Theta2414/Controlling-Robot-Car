@@ -190,7 +190,7 @@
           \item \textbf{Cảm biến:} MPU6050 (giao tiếp I2C1, chân PB6/PB7).
           \item \textbf{Bluetooth:} HC-05 (giao tiếp USART1, chế độ Master-Slave tự ghép nối).
           \item \textbf{Động cơ:} 2 mạch cầu H TB6612FNG lái độc lập 4 động cơ DC chổi than.
-          \item \textbf{Nguồn:} Pin Li-ion \qty{3.7}{\V} ở tay cầm; Pack pin \qty{7.4}{\V} ở xe (hạ áp qua LM2596 và AMS1117).
+          \item \textbf{Nguồn:} Pin Li-ion \qty{3.7}{\volt} ở tay cầm; Pack pin \qty{7.4}{\volt} ở xe (hạ áp qua LM2596 và AMS1117).
         \end{itemize}
       \end{block}
     \end{column}
@@ -201,9 +201,9 @@
           \item Trình biên dịch C trên nền STM32 HAL.
           \item \textbf{Giao tiếp ngoại vi:}
             \begin{itemize}
-              \item I2C: Tốc độ \qty{100}{\kHz}.
+              \item I2C: Tốc độ \qty{100}{\kilo\hertz}.
               \item UART: Baudrate \qty{9600}{\bps}, 8-N-1.
-              \item \textbf{PWM: Tần số \qty{10}{\kHz}} trên Timer 2 (êm ái, giảm tiếng rít từ động cơ).
+              \item \textbf{PWM: Tần số \qty{10}{\kilo\hertz}} trên Timer 2 (êm ái, giảm tiếng rít từ động cơ).
             \end{itemize}
           \item \textbf{Giải thuật chính:}
             \begin{itemize}
@@ -231,7 +231,7 @@
           \item \textbf{Vi xử lý:} STM32F103C8T6 làm trung tâm điều khiển.
           \item \textbf{Cảm biến:} MPU6050 kết nối qua giao tiếp I2C1 (chân PB6/SCL, PB7/SDA).
           \item \textbf{Truyền thông:} HC-05 Master kết nối qua USART1 (PA9/TX, PA10/RX).
-          \item \textbf{Nguồn cấp:} Pin Li-ion \qty{3.7}{\V} kết hợp mạch hạ áp AMS1117-\qty{3.3}{\V} cấp nguồn ổn định.
+          \item \textbf{Nguồn cấp:} Pin Li-ion \qty{3.7}{\volt} kết hợp mạch hạ áp AMS1117-\qty{3.3}{\volt} cấp nguồn ổn định.
         \end{itemize}
       \end{block}
     \end{column}
@@ -252,26 +252,34 @@
           \item \textbf{Vi xử lý:} STM32F103C8T6 nhận và giải mã gói tin điều khiển.
           \item \textbf{Bluetooth:} Module HC-05 Slave nhận dữ liệu qua USART1 (PA9/TX, PA10/RX).
           \item \textbf{Động lực:} 2 driver cầu H cầu TB6612FNG lái độc lập 4 bánh xe DC.
-          \item \textbf{Nguồn cấp:} Pin Li-ion \qty{7.4}{\V}, hạ áp qua mạch Buck LM2596 và LDO AMS1117-\qty{3.3}{\V}.
+          \item \textbf{Nguồn cấp:} Pin Li-ion \qty{7.4}{\volt}, hạ áp qua mạch Buck LM2596 và LDO AMS1117-\qty{3.3}{\volt}.
         \end{itemize}
       \end{block}
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{3. Triển khai — Thuật toán lọc Kalman góc nghiêng}
+\begin{frame}{3. Triển khai — Thuật toán lọc Kalman}
   \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{block}{Dung hợp cảm biến (Sensor Fusion)}
+    \begin{column}{0.55\textwidth}
+      \begin{block}{Tại sao sử dụng Kalman?}
+        \footnotesize
         \begin{itemize}
-          \item \textbf{Gia tốc kế:} Đo góc dựa trên trọng trường, phản hồi ổn định dài hạn nhưng nhạy với rung động (nhiễu cao tần).
-          \item \textbf{Con quay hồi chuyển:} Phản ứng nhanh, mượt nhưng bị trôi sai số tĩnh (drift/bias) theo thời gian.
-          \item \textbf{Kalman Filter} thực hiện ước lượng tối ưu góc nghiêng thực dựa trên dự báo từ gyro và hiệu chỉnh từ accelerometer.
-          \item \textbf{Tham số lọc:} $Q_{\text{angle}} = 0.001$, $Q_{\text{bias}} = 0.003$, $R_{\text{measure}} = 0.03$.
+          \item \textbf{Gia tốc kế (Accelerometer):} Tham chiếu góc dài hạn nhưng nhạy với rung và gia tốc động (nhiễu cao tần).
+          \item \textbf{Con quay hồi chuyển (Gyroscope):} Phản ứng nhanh nhưng có bias và tích lũy trôi góc (drift) theo thời gian.
+          \item \textbf{Bộ lọc Kalman (Kalman Filter):} Thực hiện dung hợp cảm biến (sensor fusion) thay vì lấy trung bình đơn giản.
         \end{itemize}
       \end{block}
+      \vspace{0.4em}
+      \begin{block}{Nguyên lý xử lý}
+        \scriptsize
+        \centering
+        Gyroscope $\rightarrow$ Prediction \quad | \quad Accelerometer $\rightarrow$ Measurement Update \\
+        $\Downarrow$ \\
+        Estimated Angle (Góc ước lượng tối ưu)
+      \end{block}
     \end{column}
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.41\textwidth}
       \begin{center}
         \includegraphics[width=\textwidth, height=0.68\textheight, keepaspectratio]{../Report/tikz/kalman_principle.pdf}
       \end{center}
@@ -282,30 +290,35 @@
 \begin{frame}{3. Triển khai — Công thức bộ lọc Kalman}
   \begin{columns}[T]
     \begin{column}{0.48\textwidth}
-      \begin{block}{1. Bước Dự báo (Prediction)}
+      \begin{block}{Giải pháp \& Phương trình bộ lọc}
+        \small
         \begin{itemize}
-          \item \textbf{Hiệu chỉnh bias Gyro:}
-            $$\omega_k = \omega_{\text{gyro},k} - b_{k-1}$$
-          \item \textbf{Dự báo góc nghiêng:}
-            $$\hat{\theta}_k^{-} = \hat{\theta}_{k-1} + \omega_k \Delta t$$
-          \item \textbf{Dự báo hiệp phương sai sai số:}
-            $$P_{k}^{-} = A P_{k-1} A^T + Q$$
+          \item \textbf{Trạng thái:}
+            $$x_k = [\theta_k \quad b_k]^T$$
+            \scriptsize (góc và bias con quay hồi chuyển)
+          \item \small \textbf{Bước dự đoán (Prediction):}
+            $$\theta_k^{-} = \theta_{k-1} + (\omega_{\text{measured}} - b_{k-1})\Delta t$$
+            $$b_k^{-} = b_{k-1}$$
         \end{itemize}
       \end{block}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \begin{block}{2. Bước Cập nhật (Measurement Update)}
+      \begin{block}{Bước cập nhật (Measurement Update)}
+        \small
         \begin{itemize}
-          \item \textbf{Tính sai lệch dự báo (Residual):}
-            $$y_k = \theta_{\text{acc}} - \hat{\theta}_k^{-}$$
-          \item \textbf{Hệ số Kalman (Kalman Gain):}
-            $$K_0 = \frac{P_{00}^{-}}{P_{00}^{-} + R}$$
-          \item \textbf{Ước lượng góc tối ưu:}
-            $$\hat{\theta}_k = \hat{\theta}_k^{-} + K_0 y_k = (1-K_0)\hat{\theta}_k^{-} + K_0 \theta_{\text{acc}}$$
+          \item \textbf{Sai số đo lường (Innovation):}
+            $$y_k = z_k - \theta_k^{-}$$
+            \scriptsize (với $z_k = \theta_{\text{acc}}$ từ accelerometer)
+          \item \small \textbf{Cập nhật trạng thái góc:}
+            $$\theta_k = \theta_k^{-} + K_0 \cdot y_k$$
+          \item \small \textbf{Cập nhật bias gyro:}
+            $$b_k = b_{k-1} + K_1 \cdot y_k$$
         \end{itemize}
       \end{block}
     \end{column}
   \end{columns}
+  \vspace{0.2em}
+  \centering \scriptsize \textbf{Tham số trong code:} $Q_{\text{angle}} = 0.001$, $Q_{\text{bias}} = 0.003$, $R_{\text{measure}} = 0.03$.
 \end{frame}
 
 \begin{frame}{3. Triển khai — Hiệu chuẩn \& Chu kỳ xử lý}
@@ -321,8 +334,8 @@
   \begin{block}{Chu kỳ xử lý và Tần số thực thi}
     \small
     \begin{itemize}
-      \item MPU6050 được cấu hình tần số lấy mẫu phần cứng ở mức \qty{100}{\Hz}.
-      \item Vòng lặp chính khối phát chạy chu kỳ \textbf{\qty{10}{\ms}} ($f_{\text{loop}} = \qty{100}{\Hz}$) nhờ hàm \texttt{HAL\_Delay(10)}.
+      \item MPU6050 được cấu hình tần số lấy mẫu phần cứng ở mức \qty{100}{\hertz}.
+      \item Vòng lặp chính khối phát chạy chu kỳ \textbf{\qty{10}{\ms}} ($f_{\text{loop}} = \qty{100}{\hertz}$) nhờ hàm \texttt{HAL\_Delay(10)}.
       \item Chu kỳ thực tế giữa hai lần đọc $\Delta t$ được tính toán động tại mỗi bước xử lý để đưa vào bộ lọc Kalman, tăng độ chính xác trong thời gian thực.
     \end{itemize}
   \end{block}
@@ -398,9 +411,9 @@
         \small
         \begin{itemize}
           \item \texttt{\scriptsize INIT:} Trạng thái khởi tạo phần cứng (MPU6050, Bluetooth, GPIO).
-          \item \texttt{\scriptsize IDLE (vùng chết):} Góc nghiêng tay trong dải $\pm 8^\circ$ (Deadzone), gửi lệnh dừng xe.
-          \item \texttt{\scriptsize FORWARD / BACKWARD:} Tay nghiêng quá ngưỡng dọc ($\pm 8^\circ$), gửi lệnh tiến/lùi.
-          \item \texttt{\scriptsize LEFT / RIGHT:} Tay nghiêng quá ngưỡng ngang ($\pm 8^\circ$), gửi lệnh rẽ trái/phải.
+          \item \texttt{\scriptsize IDLE (vùng chết):} Góc nghiêng tay trong dải \qty{\pm 8}{\degree} (Deadzone), gửi lệnh dừng xe.
+          \item \texttt{\scriptsize FORWARD / BACKWARD:} Tay nghiêng quá ngưỡng dọc (\qty{\pm 8}{\degree}), gửi lệnh tiến/lùi.
+          \item \texttt{\scriptsize LEFT / RIGHT:} Tay nghiêng quá ngưỡng ngang (\qty{\pm 8}{\degree}), gửi lệnh rẽ trái/phải.
         \end{itemize}
       \end{block}
     \end{column}
@@ -418,7 +431,7 @@
       \begin{block}{Nguyên lý hoạt động}
         \footnotesize
         \begin{itemize}
-          \item \textbf{Khởi động:} Cấu hình ngắt UART USART1 và cấu hình PWM \qty{10}{\kHz} trên Timer 2.
+          \item \textbf{Khởi động:} Cấu hình ngắt UART USART1 và cấu hình PWM \qty{10}{\kilo\hertz} trên Timer 2.
           \item \textbf{Vòng lặp chính:}
             \begin{itemize}
               \item Giải mã chuỗi điều khiển `"F:\%d T:\%d"`.
@@ -459,8 +472,8 @@
 \begin{frame}{4. Thử nghiệm — Kịch bản vận hành thực tế}
   \begin{block}{Thiết lập hệ thống kiểm thử}
     \begin{itemize}
-      \item Thiết bị cầm tay: STM32F103 + MPU6050 + Bluetooth Master + Pin Li-ion \qty{3.7}{\V}.
-      \item Xe thử nghiệm: Khung xe 4 bánh DC + STM32F103 + Bluetooth Slave + 2x TB6612 + Pin \qty{7.4}{\V}.
+      \item Thiết bị cầm tay: STM32F103 + MPU6050 + Bluetooth Master + Pin Li-ion \qty{3.7}{\volt}.
+      \item Xe thử nghiệm: Khung xe 4 bánh DC + STM32F103 + Bluetooth Slave + 2x TB6612 + Pin \qty{7.4}{\volt}.
       \item Địa hình: Mặt phẳng bằng, không vật cản lớn.
     \end{itemize}
   \end{block}
@@ -513,7 +526,7 @@
         \begin{itemize}
           \item Giao diện điều khiển không dây bằng chuyển động nghiêng trực quan, hiện đại, mang lại trải nghiệm tốt cho người dùng.
           \item Dung hợp cảm biến bằng Kalman Filter đạt hiệu quả cao, tín hiệu lái ổn định và đáp ứng tức thời.
-          \item Tần số băm xung điều tốc động cơ \textbf{\qty{10}{\kHz}} giúp động cơ chạy cực kỳ êm.
+          \item Tần số băm xung điều tốc động cơ \textbf{\qty{10}{\kilo\hertz}} giúp động cơ chạy cực kỳ êm.
           \item Thời gian phản hồi ngắt kết nối an toàn (Fail-safe) phản ứng nhanh (\textbf{\qty{300}{\ms}}).
         \end{itemize}
       \end{block}

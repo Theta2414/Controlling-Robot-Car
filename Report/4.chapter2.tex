@@ -33,13 +33,13 @@ Dưới đây là bảng FRDPARRC được thiết lập cho dự án:
 \hline
 1 & Đo quán tính và góc nghiêng của tay cầm & Cảm biến quán tính MPU6050 (giao tiếp I2C) & Đọc gia tốc thô, tính góc Pitch, Roll bằng hàm lượng giác & Datasheet MPU6050 \cite{mpu6050-datasheet} & Nhiễu rung từ tay người và trôi sai số con quay hồi chuyển & Thiết lập vùng chết (deadzone), hiệu chuẩn offset lúc khởi động \\
 \hline
-2 & Xử lý trung tâm khối phát (tay cầm) & Vi điều khiển STM32\-F103 (lõi Cortex-M3) & Tính toán góc và đóng gói dữ liệu lệnh gửi qua UART & Ref. Manual STM32F103 \cite{stm32-hal} & Sụt áp nguồn phát gây treo hoặc reset vi điều khiển & Sử dụng ổn áp AMS1117-3.3V và thêm tụ lọc nguồn 10uF gần chân VDD \\
+2 & Xử lý trung tâm khối phát (tay cầm) & Vi điều khiển STM32\-F103 (lõi Cortex-M3) & Tính toán góc và đóng gói dữ liệu lệnh gửi qua UART & Ref. Manual STM32F103 \cite{stm32-hal} & Sụt áp nguồn phát gây treo hoặc reset vi điều khiển & Sử dụng ổn áp AMS1117-\qty{3.3}{\volt} và thêm tụ lọc nguồn \qty{10}{\micro\farad} gần chân VDD \\
 \hline
-3 & Giao tiếp không dây nối tiếp & Module Bluetooth HC-05 (Master-Slave) & Truyền nhận gói dữ liệu điều khiển qua UART (Baud 9600) & Datasheet HC-05 & Nhiễu sóng 2.4GHz và mất kết nối khi vượt khoảng cách cho phép & Cài đặt tính năng dừng an toàn (fail-safe) tự ngắt động cơ khi mất kết nối \\
+3 & Giao tiếp không dây nối tiếp & Module Bluetooth HC-05 (Master-Slave) & Truyền nhận gói dữ liệu điều khiển qua UART (Baud \num{9600}) & Datasheet HC-05 & Nhiễu sóng \qty{2.4}{\giga\hertz} và mất kết nối khi vượt khoảng cách cho phép & Cài đặt tính năng dừng an toàn (fail-safe) tự ngắt động cơ khi mất kết nối \\
 \hline
 4 & Xử lý trung tâm và điều khiển khối thu & Vi điều khiển STM32\-F103 (khối thu) & Giải mã gói tin UART, xử lý logic lái và xuất tín hiệu điều khiển & Ref. Manual STM32F103 \cite{stm32-hal} & Nhiễu điện từ động cơ gây treo chip hoặc sai lệch tín hiệu điều khiển & Sử dụng Watchdog Timer, tối ưu bộ đệm UART và lắp tụ chống nhiễu \\
 \hline
-5 & Điều khiển công suất động cơ DC & Driver cầu H TB6612FNG và động cơ DC chổi than & Cấp xung PWM điều tốc (Timer 2) và xuất GPIO điều khiển chiều & Datasheet TB6612 & Dòng khởi động lớn gây sụt áp nguồn chính hoặc quá dòng khi kẹt động cơ & Tách nguồn động cơ và vi xử lý, thêm tụ điện 470uF lọc nguồn \\
+5 & Điều khiển công suất động cơ DC & Driver cầu H TB6612FNG và động cơ DC chổi than & Cấp xung PWM điều tốc (Timer 2) và xuất GPIO điều khiển chiều & Datasheet TB6612 & Dòng khởi động lớn gây sụt áp nguồn chính hoặc quá dòng khi kẹt động cơ & Tách nguồn động cơ và vi xử lý, thêm tụ điện \qty{470}{\micro\farad} lọc nguồn \\
 \hline
 6 & Cung cấp nguồn năng lượng ổn định & Pin Li-ion \qty{7.4}{\volt} cho xe, pin \qty{3.7}{\volt} cho tay cầm & Đo điện áp ngõ ra của bộ ổn áp dưới tải nặng & Datasheet LM2596 / AMS1117 & Quá nhiệt hoặc sụt áp khi hoạt động dưới tải nặng & Sử dụng module hạ áp Buck LM2596 và ổn áp AMS1117 hiệu suất cao \\
 \hline
@@ -50,7 +50,7 @@ Dưới đây là bảng FRDPARRC được thiết lập cho dự án:
 Quá trình nghiên cứu và phát triển hệ thống được nhóm thực hiện tuần tự qua các giai đoạn nghiên cứu lý thuyết, lựa chọn linh kiện, thiết kế phần cứng và lập trình phần mềm:
 \begin{itemize}
     \item \textbf{Nghiên cứu nguyên lý cảm biến và xử lý số liệu:} Tìm hiểu cấu trúc thanh ghi của cảm biến MPU6050 \cite{mpu6050-register}, nguyên lý đo gia tốc quán tính để tính toán góc nghiêng dựa trên vectơ trọng lực của Trái Đất. Nhóm đã nghiên cứu các công thức lượng giác (\texttt{atan2f}) \cite{serway2018physics} để chuyển đổi gia tốc thô trên các trục X, Y, Z thành góc Pitch và Roll. Nhóm cũng tìm hiểu hiện tượng nhiễu rung động học và trôi sai số tích lũy để thiết lập thuật toán hiệu chuẩn offset lúc khởi động và cài đặt dải chết (deadzone) hợp lý nhằm triệt tiêu dao động nhỏ khi tay cầm đứng yên.
-    \item \textbf{Nghiên cứu tài nguyên vi điều khiển:} Tìm hiểu tập lệnh HAL (Hardware Abstraction Layer) của STM32 \cite{stm32-hal} để cấu hình các ngoại vi phần cứng: giao tiếp I2C1 tốc độ \qty{100}{\kilo\hertz} đọc cảm biến \cite{noviello2022mastering}, USART1 tốc độ BaudRate \qty{9600}{bps} truyền thông nối tiếp, và Timer 2 cấu hình các kênh xuất xung PWM tần số \qty{10}{\kilo\hertz} để điều khiển động cơ DC di chuyển êm ái, tránh phát ra tiếng rít từ cuộn dây động cơ.
+    \item \textbf{Nghiên cứu tài nguyên vi điều khiển:} Tìm hiểu tập lệnh HAL (Hardware Abstraction Layer) của STM32 \cite{stm32-hal} để cấu hình các ngoại vi phần cứng: giao tiếp I2C1 tốc độ \qty{100}{\kilo\hertz} đọc cảm biến \cite{noviello2022mastering}, USART1 tốc độ BaudRate \qty{9600}{\bps} truyền thông nối tiếp, và Timer 2 cấu hình các kênh xuất xung PWM tần số \qty{10}{\kilo\hertz} để điều khiển động cơ DC di chuyển êm ái, tránh phát ra tiếng rít từ cuộn dây động cơ.
     \item \textbf{Nghiên cứu giao tiếp truyền thông không dây:} Tìm hiểu cơ chế ghép nối tự động Master-Slave giữa hai module Bluetooth HC-05 sử dụng tập lệnh cấu hình AT thông qua cổng nối tiếp. Thiết lập liên kết không dây ổn định dưới dạng truyền nhận nối tiếp trong suốt, bảo đảm dữ liệu gửi đi từ khối phát được phản hồi tức thời tại khối thu.
     \item \textbf{Nghiên cứu mạch động lực điều khiển:} Phân tích đặc tính dòng điện và điện áp hoạt động của động cơ DC chổi than dưới tải thực tế \cite{alexander2021fundamentals}. Nghiên cứu mạch cầu H TB6612FNG, nhận thấy ưu điểm vượt trội của nó so với dòng mạch cũ L298N nhờ sử dụng công nghệ cầu H MOSFET giúp giảm sụt áp nội bộ và tỏa ít nhiệt hơn, bảo vệ tốt nguồn pin của xe.
 \end{itemize}
@@ -103,10 +103,10 @@ Hệ thống điều khiển hoạt động dựa trên sự phối hợp chặt
 Quy trình vận hành khép kín của hệ thống diễn ra liên tục theo chu kỳ thời gian thực:
 \begin{enumerate}
     \item \textbf{Khối phát}: Vi điều khiển STM32 đọc dữ liệu gia tốc 3 trục từ cảm biến MPU6050 qua giao tiếp I2C. Dựa trên dữ liệu gia tốc này, thuật toán lượng giác tính toán góc nghiêng Pitch ($\theta$) và Roll ($\phi$) của bàn tay:
-    \[ \theta = \mathrm{atan2}(A_x, \sqrt{A_y^2 + A_z^2}) \times \frac{180}{\pi} \]
-    \[ \phi = \mathrm{atan2}(A_y, \sqrt{A_x^2 + A_z^2}) \times \frac{180}{\pi} \]
+    \[ \theta = \mathrm{atan2}(-A_x, \sqrt{A_y^2 + A_z^2}) \times \frac{180}{\pi} \]
+    \[ \phi = \mathrm{atan2}(A_y, A_z) \times \frac{180}{\pi} \]
     Sau khi áp dụng bộ lọc dải chết (Deadzone) để loại bỏ rung lắc tay nhẹ, STM32 phân loại góc nghiêng thành các lệnh di chuyển tương ứng và gửi gói tin qua UART đến module Bluetooth HC-05 (Master).
-    \item \textbf{Khối thu}: Module Bluetooth HC-05 (Slave) nhận sóng RF và chuyển tiếp gói dữ liệu đến STM32 khối thu qua UART. Vi điều khiển giải mã gói tin, kiểm tra tính hợp lệ và cập nhật trạng thái hoạt động của xe. Đồng thời, một cơ chế kiểm tra thời gian chờ (Timeout) liên tục giám sát trạng thái kết nối. Nếu quá 0.3 giây (300 ms) không nhận được gói tin mới, hệ thống tự động kích hoạt chế độ Fail-safe để bảo vệ an toàn cho xe.
+    \item \textbf{Khối thu}: Module Bluetooth HC-05 (Slave) nhận sóng RF và chuyển tiếp gói dữ liệu đến STM32 khối thu qua UART. Vi điều khiển giải mã gói tin, kiểm tra tính hợp lệ và cập nhật trạng thái hoạt động của xe. Đồng thời, một cơ chế kiểm tra thời gian chờ (Timeout) liên tục giám sát trạng thái kết nối. Nếu quá \qty{0.3}{\second} (\qty{300}{\ms}) không nhận được gói tin mới, hệ thống tự động kích hoạt chế độ Fail-safe để bảo vệ an toàn cho xe.
 \end{enumerate}
 
 \subsection{Lưu đồ giải thuật hệ thống}
@@ -118,8 +118,8 @@ Thuật toán khối phát hoạt động theo mô hình vòng lặp vô hạn (
     \item Khởi tạo hệ thống: Thiết lập GPIO, cấu hình giao tiếp I2C1 và USART1, cấu hình dải đo gia tốc cho MPU6050.
     \item Đọc dữ liệu cảm biến: Đọc 6 byte dữ liệu gia tốc hướng trục từ MPU6050.
     \item Tính toán góc nghiêng: Áp dụng công thức hàm lượng giác để xác định góc Pitch và Roll.
-    \item Xử lý dải chết (Deadzone): Nếu góc nghiêng nhỏ hơn $8^\circ$, coi như tay nằm ngang (Lệnh Dừng). Nếu vượt quá $8^\circ$, hệ thống bắt đầu tính toán giá trị điều khiển và ánh xạ góc nghiêng sang mức tốc độ PWM tương ứng theo hàm phi tuyến.
-    \item Truyền dữ liệu: Đóng gói ký tự điều khiển (tiến, lùi, trái, phải, dừng) và gửi ra cổng USART1.
+    \item Xử lý dải chết (Deadzone): Nếu góc nghiêng nhỏ hơn \qty{8}{\degree}, coi như tay nằm ngang (Lệnh Dừng). Nếu vượt quá \qty{8}{\degree}, hệ thống bắt đầu tính toán giá trị điều khiển và ánh xạ góc nghiêng sang mức tốc độ PWM tương ứng theo hàm phi tuyến.
+    \item Truyền dữ liệu: Đóng gói giá trị Forward và Turn thành chuỗi ký tự ASCII theo định dạng \texttt{"F:\%d T:\%d\textbackslash n"} và gửi ra cổng USART1.
     \item Trì hoãn (Delay): Chờ \qty{10}{\milli\second} trước khi lặp lại chu kỳ mới.
 \end{itemize}
 
@@ -130,7 +130,7 @@ Thuật toán khối thu hoạt động kết hợp giữa ngắt nhận dữ li
     \item Vòng lặp chính:
     \begin{itemize}
         \item Liên tục kiểm tra biến đếm thời gian (Timeout Counter). Nếu thời gian trôi qua từ lần nhận gói tin cuối cùng vượt quá \qty{300}{\milli\second}, hệ thống tự động đưa xe về trạng thái dừng khẩn cấp (Fail-Safe), tắt xung PWM và ngắt dòng động cơ.
-        \item Khi nhận được ký tự điều khiển hợp lệ qua ngắt UART: Cập nhật lệnh di chuyển, đặt lại biến đếm thời gian về 0, điều chỉnh các chân GPIO hướng quay và thay đổi chu kỳ nhiệm vụ (Duty Cycle) của xung PWM để thay đổi tốc độ động cơ theo yêu cầu điều tốc.
+        \item Khi nhận được gói tin UART hợp lệ kết thúc bằng ký tự xuống dòng \texttt{'\textbackslash n'}: Giải mã chuỗi thành hai giá trị Forward và Turn, đặt lại biến đếm thời gian về 0, tính toán điều tốc vi sai bánh xe trái/phải, cập nhật các chân GPIO hướng quay và chu kỳ nhiệm vụ (Duty Cycle) của xung PWM.
     \end{itemize}
 \end{itemize}
 
@@ -156,7 +156,7 @@ Thuật toán khối thu hoạt động kết hợp giữa ngắt nhận dữ li
     \item \textbf{STATE\_BACKWARD (Trạng thái lùi):} Xe di chuyển lùi về sau. Kích hoạt khi góc Pitch hướng về phía sau vượt ngưỡng.
     \item \textbf{STATE\_LEFT (Trạng thái rẽ trái):} Xe rẽ trái bằng cách quay ngược chiều giữa hai bên bánh xe hoặc giảm tốc độ bên trái, tăng tốc độ bên phải. Kích hoạt khi góc Roll nghiêng sang trái.
     \item \textbf{STATE\_RIGHT (Trạng thái rẽ phải):} Xe rẽ phải bằng cách giảm tốc độ bên phải, tăng tốc độ bên trái. Kích hoạt khi góc Roll nghiêng sang phải.
-    \item \textbf{STATE\_FAIL\_SAFE (Trạng thái dừng an toàn):} Trạng thái khẩn cấp kích hoạt ngay lập tức khi mất tín hiệu kết nối Bluetooth giữa khối phát và khối thu quá thời gian quy định (0.3 giây hoặc 300 ms). Trạng thái này có độ ưu tiên cao nhất, lập tức khóa đầu ra động cơ và chỉ cho phép chuyển sang trạng thái \textbf{STATE\_STOP} khi kết nối Bluetooth được thiết lập lại thành công.
+    \item \textbf{STATE\_FAIL\_SAFE (Trạng thái dừng an toàn):} Trạng thái khẩn cấp kích hoạt ngay lập tức khi mất tín hiệu kết nối Bluetooth giữa khối phát và khối thu quá thời gian quy định (\qty{0.3}{\second} hoặc \qty{300}{\ms}). Trạng thái này có độ ưu tiên cao nhất, lập tức khóa đầu ra động cơ và chỉ cho phép chuyển sang trạng thái \textbf{STATE\_STOP} khi kết nối Bluetooth được thiết lập lại thành công.
 \end{enumerate}
 
 Dưới đây là bảng chuyển đổi trạng thái của hệ thống điều khiển:
@@ -171,19 +171,19 @@ Dưới đây là bảng chuyển đổi trạng thái của hệ thống điề
 \hline
 \textbf{Trạng thái hiện tại} & \textbf{Trạng thái tiếp theo} & \textbf{Điều kiện chuyển trạng thái} & \textbf{Hành động thực hiện} \\
 \hline
-Mọi trạng thái & STATE\_FAIL\_SAFE & Mất kết nối Bluetooth quá 0.3 giây (300 ms) & Tắt PWM (0\%), dừng khẩn cấp xe \\
+Mọi trạng thái & STATE\_FAIL\_SAFE & Mất kết nối Bluetooth quá \qty{0.3}{\second} (\qty{300}{\ms}) & Tắt PWM (\qty{0}{\percent}), dừng khẩn cấp xe \\
 \hline
 STATE\_FAIL\_SAFE & STATE\_STOP & Kết nối Bluetooth được khôi phục & Reset bộ đệm, chờ lệnh mới \\
 \hline
-STATE\_STOP & STATE\_FORWARD & Góc Pitch tay cầm $> 8^\circ$ & Xuất GPIO tiến, phát PWM điều tốc \\
+STATE\_STOP & STATE\_FORWARD & Nhận được giá trị điều khiển $F > 0$ & Xuất GPIO tiến, phát PWM điều tốc \\
 \hline
-STATE\_STOP & STATE\_BACKWARD & Góc Pitch tay cầm $< -8^\circ$ & Xuất GPIO lùi, phát PWM điều tốc \\
+STATE\_STOP & STATE\_BACKWARD & Nhận được giá trị điều khiển $F < 0$ & Xuất GPIO lùi, phát PWM điều tốc \\
 \hline
-STATE\_STOP & STATE\_LEFT & Góc Roll tay cầm $< -8^\circ$ & Xuất GPIO rẽ trái, phát PWM điều tốc \\
+STATE\_STOP & STATE\_LEFT & Nhận được giá trị điều khiển $T < 0$ & Xuất GPIO rẽ trái, phát PWM điều tốc \\
 \hline
-STATE\_STOP & STATE\_RIGHT & Góc Roll tay cầm $> 8^\circ$ & Xuất GPIO rẽ phải, phát PWM điều tốc \\
+STATE\_STOP & STATE\_RIGHT & Nhận được giá trị điều khiển $T > 0$ & Xuất GPIO rẽ phải, phát PWM điều tốc \\
 \hline
-STATE\_FORWARD / BACKWARD / LEFT / RIGHT & STATE\_STOP & Góc Pitch và Roll nằm trong dải chết ($\pm 8^\circ$) & Tắt xung PWM, dừng động cơ xe \\
+STATE\_FORWARD / BACKWARD / LEFT / RIGHT & STATE\_STOP & Nhận được giá trị \(F = \num{0}\) và \(T = \num{0}\) & Tắt xung PWM, dừng động cơ xe \\
 \hline
 \end{tabularx}
 \end{table}
@@ -192,12 +192,12 @@ STATE\_FORWARD / BACKWARD / LEFT / RIGHT & STATE\_STOP & Góc Pitch và Roll n�
     \centering
     \includegraphics[width=\textwidth]{Drawio/Transmitter_FSM.drawio.pdf}
     \caption{Sơ đồ máy trạng thái khối phát}
-    \label{fig:receiver-fsm}
+    \label{fig:transmitter-fsm}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{Drawio/Receiver_FSM.drawio.pdf}
     \caption{Sơ đồ máy trạng thái khối thu}
-    \label{fig:transmitter-fsm}
+    \label{fig:receiver-fsm}
 \end{figure}
