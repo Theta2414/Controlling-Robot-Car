@@ -1026,15 +1026,16 @@ Bảng sau minh họa quá trình ánh xạ mẫu theo công thức trên:
     \renewcommand{\arraystretch}{1.3}
     \caption{Ánh xạ góc nghiêng sang giá trị điều khiển thực tế}
     \label{tab:angle-control}
-    \begin{tabular}{c r @{} l}
+    % Cấu hình cột 2 dạng S với định dạng số gồm 1 dấu và 2 chữ số nguyên (+2.0)
+    \begin{tabular}{c S[table-format=+2.0]}
         \toprule
-        \textbf{Góc nghiêng} & \multicolumn{2}{c}{\textbf{Giá trị điều khiển}} \\
-        \centering
-        \qty{-60}{\degree} & $-$ & \num{80} \\
-        \qty{-34}{\degree} & $-$ & \num{20} \\
-        \qty{0}{\degree} & & \num{0} \\
-        \qty{34}{\degree} & $+$ & \num{20} \\
-        \qty{60}{\degree} & $+$ & \num{80} \\
+        \textbf{Góc nghiêng} & {\textbf{Giá trị điều khiển}} \\ % Bọc tiêu đề trong cặp { } để siunitx hiểu là text
+        \midrule
+        \qty{-60}{\degree} & -80 \\
+        \qty{-34}{\degree} & -20 \\
+        \qty{0}{\degree}   &  0 \\
+        \qty{34}{\degree}  & +20 \\
+        \qty{60}{\degree}  & +80 \\
         \bottomrule
     \end{tabular}
 \end{table}

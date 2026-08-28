@@ -456,10 +456,8 @@
       \begin{block}{Các trạng thái hoạt động}
         \small
         \begin{itemize}
-          \item \texttt{\scriptsize INIT \& WAIT\_CONN:} Khởi tạo hệ thống và chờ kết nối Bluetooth.
-          \item \texttt{\scriptsize IDLE:} Xe ở trạng thái chờ lệnh di chuyển (dừng động cơ).
-          \item \texttt{\scriptsize Điều khiển động cơ:} Các trạng thái di chuyển: \texttt{\scriptsize FORWARD}, \texttt{\scriptsize BACKWARD}, \texttt{\scriptsize TURN\_LEFT}, \texttt{\scriptsize TURN\_RIGHT}.
-          \item \texttt{\scriptsize SAFE\_STOP (Fail-safe):} Dừng khẩn cấp khi mất kết nối Bluetooth quá \textbf{\qty{300}{\ms}}.
+          \item \texttt{\scriptsize STATE\_RUNNING:} Hoạt động bình thường. Giải mã dữ liệu và điều phối động cơ bằng vi sai.
+          \item \texttt{\scriptsize STATE\_FAIL\_SAFE:} Trạng thái dừng an toàn. Dừng xe khẩn cấp khi mất sóng quá \textbf{\qty{300}{\ms}}.
         \end{itemize}
       \end{block}
     \end{column}

@@ -109,6 +109,8 @@ Quy trình vận hành khép kín của hệ thống diễn ra liên tục theo 
     \item \textbf{Khối thu}: Module Bluetooth HC-05 (Slave) nhận sóng RF và chuyển tiếp gói dữ liệu đến STM32 khối thu qua UART. Vi điều khiển giải mã gói tin, kiểm tra tính hợp lệ và cập nhật trạng thái hoạt động của xe. Đồng thời, một cơ chế kiểm tra thời gian chờ (Timeout) liên tục giám sát trạng thái kết nối. Nếu quá \qty{0.3}{\second} (\qty{300}{\ms}) không nhận được gói tin mới, hệ thống tự động kích hoạt chế độ Fail-safe để bảo vệ an toàn cho xe.
 \end{enumerate}
 
+Cách xử lý tín hiệu và chuyển đổi góc thành tín hiệu điều khiển được trình bày chi tiết ở Chương \ref{chap:mpu-kalman}.
+
 \subsection{Lưu đồ giải thuật hệ thống}
 Giải thuật lập trình cho vi xử lý ở cả hai khối được xây dựng nhằm tối ưu hóa tính thời gian thực và độ an toàn của xe robot di động.
 
@@ -149,18 +151,49 @@ Thuật toán khối thu hoạt động kết hợp giữa ngắt nhận dữ li
 \end{figure}
 
 \subsection{Máy trạng thái finite (FSM) của hệ thống}
-Để quản lý hành vi chuyển động và đảm bảo tính an toàn cao nhất, giải thuật điều khiển khối thu được thiết kế dưới dạng một máy trạng thái finite (Finite State Machine). Các trạng thái hoạt động chính của xe robot bao gồm:
+Để quản lý hành vi và đảm bảo tính thời gian thực cũng như độ an toàn cao nhất, hệ thống điều khiển được thiết kế dựa trên mô hình máy trạng thái finite (Finite State Machine - FSM) riêng biệt cho cả khối phát (tay cầm) và khối thu (xe robot).
+
+\subsubsection{Máy trạng thái khối phát (Transmitter FSM)}
+Khối phát sử dụng máy trạng thái tuần tự để quản lý quá trình khởi động, hiệu chuẩn cảm biến và liên tục truyền dữ liệu:
 \begin{enumerate}
-    \item \textbf{STATE\_STOP (Trạng thái dừng):} Trạng thái mặc định khi khởi động xe hoặc khi góc nghiêng tay nằm trong dải chết. PWM ngắt (0\%), các chân điều hướng động cơ ở mức logic thấp.
-    \item \textbf{STATE\_FORWARD (Trạng thái tiến):} Xe di chuyển về phía trước. Kích hoạt khi góc Pitch tay cầm hướng lên phía trước vượt ngưỡng. Tốc độ xe tỷ lệ thuận với góc nghiêng.
-    \item \textbf{STATE\_BACKWARD (Trạng thái lùi):} Xe di chuyển lùi về sau. Kích hoạt khi góc Pitch hướng về phía sau vượt ngưỡng.
-    \item \textbf{STATE\_LEFT (Trạng thái rẽ trái):} Xe rẽ trái bằng cách quay ngược chiều giữa hai bên bánh xe hoặc giảm tốc độ bên trái, tăng tốc độ bên phải. Kích hoạt khi góc Roll nghiêng sang trái.
-    \item \textbf{STATE\_RIGHT (Trạng thái rẽ phải):} Xe rẽ phải bằng cách giảm tốc độ bên phải, tăng tốc độ bên trái. Kích hoạt khi góc Roll nghiêng sang phải.
-    \item \textbf{STATE\_FAIL\_SAFE (Trạng thái dừng an toàn):} Trạng thái khẩn cấp kích hoạt ngay lập tức khi mất tín hiệu kết nối Bluetooth giữa khối phát và khối thu quá thời gian quy định (\qty{0.3}{\second} hoặc \qty{300}{\ms}). Trạng thái này có độ ưu tiên cao nhất, lập tức khóa đầu ra động cơ và chỉ cho phép chuyển sang trạng thái \textbf{STATE\_STOP} khi kết nối Bluetooth được thiết lập lại thành công.
+    \item \textbf{STATE\_INIT (Khởi tạo):} Trạng thái khởi tạo phần cứng ngay sau khi cấp nguồn. Vi điều khiển cấu hình các ngoại vi GPIO, USART1, I2C1 và kiểm tra phản hồi từ cảm biến MPU6050.
+    \item \textbf{STATE\_CALIB (Hiệu chuẩn):} Khi MPU6050 sẵn sàng, hệ thống thu thập \num{200} mẫu dữ liệu quán tính khi thiết bị đứng yên nhằm tính toán các giá trị offset của góc nghiêng và sai lệch tĩnh (bias) của gyroscope.
+    \item \textbf{STATE\_ACTIVE (Hoạt động \& Truyền tin):} Trạng thái hoạt động chính. Hệ thống chạy chu kỳ \qty{10}{\ms}, liên tục đọc cảm biến, lọc Kalman để ước lượng góc Pitch và Roll, tính toán lệnh điều khiển phi tuyến và gửi chuỗi ký tự qua Bluetooth.
 \end{enumerate}
 
-Dưới đây là bảng chuyển đổi trạng thái của hệ thống điều khiển:
+Bảng chuyển đổi trạng thái của khối phát:
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\caption{Bảng chuyển đổi trạng thái (FSM) của khối phát}
+\label{tab:tx_fsm_transitions}
+\changefontsizes{9pt}
+\begin{tabularx}{0.98\textwidth}{|>{\raggedright\arraybackslash}p{3.3cm}|>{\raggedright\arraybackslash}p{3.3cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}p{3.2cm}|}
+\hline
+\textbf{Trạng thái hiện tại} & \textbf{Trạng thái tiếp theo} & \textbf{Điều kiện chuyển trạng thái} & \textbf{Hành động thực hiện} \\
+\hline
+STATE\_INIT & STATE\_CALIB & Khởi tạo phần cứng thành công và cảm biến MPU6050 sẵn sàng & Gửi thông báo Checkpoint qua UART, bắt đầu đếm số mẫu hiệu chuẩn \\
+\hline
+STATE\_CALIB & STATE\_ACTIVE & Thu thập đủ \num{200} mẫu dữ liệu thành công & Tính toán trung bình cộng offset/bias, lưu giá trị hiệu chuẩn \\
+\hline
+\end{tabularx}
+\end{table}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Drawio/Transmitter_FSM.drawio.pdf}
+    \caption{Sơ đồ máy trạng thái khối phát}
+    \label{fig:transmitter-fsm}
+\end{figure}
+
+\subsubsection{Máy trạng thái khối thu (Receiver FSM)}
+Khối thu sử dụng máy trạng thái để kiểm soát chuyển động và thực hiện cơ chế dừng khẩn cấp (Fail-safe):
+\begin{enumerate}
+    \item \textbf{STATE\_RUNNING (Trạng thái hoạt động bình thường):} Trạng thái xe kết nối Bluetooth ổn định với tay cầm. Ở trạng thái này, vi điều khiển khối thu giải mã các giá trị điều khiển \(F\) và \(T\) nhận được từ cổng UART, sau đó thực hiện thuật toán vi sai để điều tốc và điều hướng xe thông qua hàm \texttt{Motor\_SetControl(F, T)}.
+    \item \textbf{STATE\_FAIL\_SAFE (Trạng thái dừng an toàn):} Trạng thái khẩn cấp kích hoạt ngay lập tức khi mất tín hiệu kết nối Bluetooth giữa khối phát và khối thu quá thời gian quy định (\qty{0.3}{\second} hoặc \qty{300}{\ms}). Trạng thái này có độ ưu tiên cao nhất, lập tức tắt xung PWM (\qty{0}{\percent}) và ngắt dòng động cơ bằng hàm \texttt{Motor\_Stop()} nhằm bảo vệ xe an toàn, đồng thời chỉ cho phép chuyển sang trạng thái \textbf{STATE\_RUNNING} khi nhận lại được gói tin Bluetooth hợp lệ từ khối phát.
+\end{enumerate}
+
+Bảng chuyển đổi trạng thái của khối thu:
 \begin{table}[H]
 \centering
 \renewcommand{\arraystretch}{1.3}
@@ -171,33 +204,16 @@ Dưới đây là bảng chuyển đổi trạng thái của hệ thống điề
 \hline
 \textbf{Trạng thái hiện tại} & \textbf{Trạng thái tiếp theo} & \textbf{Điều kiện chuyển trạng thái} & \textbf{Hành động thực hiện} \\
 \hline
-Mọi trạng thái & STATE\_FAIL\_SAFE & Mất kết nối Bluetooth quá \qty{0.3}{\second} (\qty{300}{\ms}) & Tắt PWM (\qty{0}{\percent}), dừng khẩn cấp xe \\
+STATE\_RUNNING & STATE\_FAIL\_SAFE & Mất kết nối Bluetooth quá \qty{0.3}{\second} (\qty{300}{\ms}) & Tắt xung PWM (\qty{0}{\percent}), gọi hàm dừng động cơ xe \\
 \hline
-STATE\_FAIL\_SAFE & STATE\_STOP & Kết nối Bluetooth được khôi phục & Reset bộ đệm, chờ lệnh mới \\
-\hline
-STATE\_STOP & STATE\_FORWARD & Nhận được giá trị điều khiển $F > 0$ & Xuất GPIO tiến, phát PWM điều tốc \\
-\hline
-STATE\_STOP & STATE\_BACKWARD & Nhận được giá trị điều khiển $F < 0$ & Xuất GPIO lùi, phát PWM điều tốc \\
-\hline
-STATE\_STOP & STATE\_LEFT & Nhận được giá trị điều khiển $T < 0$ & Xuất GPIO rẽ trái, phát PWM điều tốc \\
-\hline
-STATE\_STOP & STATE\_RIGHT & Nhận được giá trị điều khiển $T > 0$ & Xuất GPIO rẽ phải, phát PWM điều tốc \\
-\hline
-STATE\_FORWARD / BACKWARD / LEFT / RIGHT & STATE\_STOP & Nhận được giá trị \(F = \num{0}\) và \(T = \num{0}\) & Tắt xung PWM, dừng động cơ xe \\
+STATE\_FAIL\_SAFE & STATE\_RUNNING & Nhận được gói tin UART mới hợp lệ kết thúc bằng ký tự \texttt{'\textbackslash n'} & Cập nhật thời điểm nhận tin và gọi hàm điều khiển động cơ \\
 \hline
 \end{tabularx}
 \end{table}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Drawio/Transmitter_FSM.drawio.pdf}
-    \caption{Sơ đồ máy trạng thái khối phát}
-    \label{fig:transmitter-fsm}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{Drawio/Receiver_FSM.drawio.pdf}
+    \includegraphics[width=0.7\textwidth]{Drawio/Receiver_FSM.drawio.pdf}
     \caption{Sơ đồ máy trạng thái khối thu}
     \label{fig:receiver-fsm}
 \end{figure}
