@@ -16,6 +16,8 @@ Report/*.gz
 Report/tikz/*.gz
 Report/References
 
+Presentation/build
+
 # Ninja
 .ninja_deps
 .ninja_log

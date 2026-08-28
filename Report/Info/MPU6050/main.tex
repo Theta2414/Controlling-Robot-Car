@@ -1110,14 +1110,14 @@ Giá trị $\Delta t$ được sử dụng trực tiếp trong bước predictio
 
 Do thời gian thực hiện các tác vụ trong vòng lặp có thể thay đổi, $\Delta t$ không được xem là một giá trị cố định mà được tính toán lại ở mỗi chu kỳ xử lý dựa trên thời gian thực tế giữa hai lần cập nhật liên tiếp.
 
-Vòng lặp chính được thiết lập với khoảng thời gian xử lý mục tiêu khoảng $20$ ms. Do đó, tần số xử lý của vòng lặp có thể được ước tính xấp xỉ:
+Vòng lặp chính được thiết lập với khoảng thời gian xử lý mục tiêu khoảng $10$ ms. Do đó, tần số xử lý của vòng lặp có thể được ước tính xấp xỉ:
 
 \begin{equation}
 f_{\text{loop}}
 \approx
-\frac{1}{0.02}
+\frac{1}{0.01}
 =
-50\ \text{Hz}
+100\ \text{Hz}
 \end{equation}
 
 Trong khi đó, MPU6050 được cấu hình với tần số lấy mẫu:
@@ -1126,7 +1126,7 @@ Trong khi đó, MPU6050 được cấu hình với tần số lấy mẫu:
 f_{\text{MPU6050}}=100\ \text{Hz}
 \end{equation}
 
-Như vậy, cảm biến được cấu hình với tần số lấy mẫu cao hơn tần số xử lý của vòng lặp chính. Trong chương trình hiện tại, dữ liệu cảm biến được đọc và đưa vào Kalman Filter với tần số xử lý mục tiêu khoảng $50$ Hz, trong khi giá trị $\Delta t$ được sử dụng trong bộ lọc vẫn được xác định dựa trên thời gian thực tế giữa hai lần cập nhật.
+Như vậy, cảm biến và vòng lặp chính đều được thiết lập ở cùng tần số. Trong chương trình hiện tại, dữ liệu cảm biến được đọc và đưa vào Kalman Filter với tần số xử lý mục tiêu khoảng $100$ Hz, trong khi giá trị $\Delta t$ được sử dụng trong bộ lọc vẫn được xác định dựa trên thời gian thực tế giữa hai lần cập nhật.
 
 % =========================================================
 % LUỒNG XỬ LÝ

@@ -50,7 +50,7 @@ Dưới đây là bảng FRDPARRC được thiết lập cho dự án:
 Quá trình nghiên cứu và phát triển hệ thống được nhóm thực hiện tuần tự qua các giai đoạn nghiên cứu lý thuyết, lựa chọn linh kiện, thiết kế phần cứng và lập trình phần mềm:
 \begin{itemize}
     \item \textbf{Nghiên cứu nguyên lý cảm biến và xử lý số liệu:} Tìm hiểu cấu trúc thanh ghi của cảm biến MPU6050 \cite{mpu6050-register}, nguyên lý đo gia tốc quán tính để tính toán góc nghiêng dựa trên vectơ trọng lực của Trái Đất. Nhóm đã nghiên cứu các công thức lượng giác (\texttt{atan2f}) \cite{serway2018physics} để chuyển đổi gia tốc thô trên các trục X, Y, Z thành góc Pitch và Roll. Nhóm cũng tìm hiểu hiện tượng nhiễu rung động học và trôi sai số tích lũy để thiết lập thuật toán hiệu chuẩn offset lúc khởi động và cài đặt dải chết (deadzone) hợp lý nhằm triệt tiêu dao động nhỏ khi tay cầm đứng yên.
-    \item \textbf{Nghiên cứu tài nguyên vi điều khiển:} Tìm hiểu tập lệnh HAL (Hardware Abstraction Layer) của STM32 \cite{stm32-hal} để cấu hình các ngoại vi phần cứng: giao tiếp I2C1 tốc độ \qty{100}{\kilo\hertz} đọc cảm biến \cite{noviello2022mastering}, USART1 tốc độ BaudRate \qty{9600}{bps} truyền thông nối tiếp, và Timer 2 cấu hình các kênh xuất xung PWM tần số \qty{\approx1}{\kilo\hertz} để điều khiển động cơ DC di chuyển êm ái, tránh phát ra tiếng rít từ cuộn dây động cơ.
+    \item \textbf{Nghiên cứu tài nguyên vi điều khiển:} Tìm hiểu tập lệnh HAL (Hardware Abstraction Layer) của STM32 \cite{stm32-hal} để cấu hình các ngoại vi phần cứng: giao tiếp I2C1 tốc độ \qty{100}{\kilo\hertz} đọc cảm biến \cite{noviello2022mastering}, USART1 tốc độ BaudRate \qty{9600}{bps} truyền thông nối tiếp, và Timer 2 cấu hình các kênh xuất xung PWM tần số \qty{10}{\kilo\hertz} để điều khiển động cơ DC di chuyển êm ái, tránh phát ra tiếng rít từ cuộn dây động cơ.
     \item \textbf{Nghiên cứu giao tiếp truyền thông không dây:} Tìm hiểu cơ chế ghép nối tự động Master-Slave giữa hai module Bluetooth HC-05 sử dụng tập lệnh cấu hình AT thông qua cổng nối tiếp. Thiết lập liên kết không dây ổn định dưới dạng truyền nhận nối tiếp trong suốt, bảo đảm dữ liệu gửi đi từ khối phát được phản hồi tức thời tại khối thu.
     \item \textbf{Nghiên cứu mạch động lực điều khiển:} Phân tích đặc tính dòng điện và điện áp hoạt động của động cơ DC chổi than dưới tải thực tế \cite{alexander2021fundamentals}. Nghiên cứu mạch cầu H TB6612FNG, nhận thấy ưu điểm vượt trội của nó so với dòng mạch cũ L298N nhờ sử dụng công nghệ cầu H MOSFET giúp giảm sụt áp nội bộ và tỏa ít nhiệt hơn, bảo vệ tốt nguồn pin của xe.
 \end{itemize}
@@ -70,7 +70,7 @@ Hệ thống hoàn chỉnh được cấu thành từ các thành phần linh ki
 \begin{itemize}
     \item \textbf{Vi điều khiển STM32F103C8T6:} Tiếp nhận dữ liệu từ module Bluetooth qua USART1 (chân RX - PA10), xử lý logic điều hướng và xuất các tín hiệu PWM điều tốc cùng GPIO điều khiển hướng động cơ.
     \item \textbf{Module Bluetooth HC-05 (Slave):} Nhận tín hiệu sóng vô tuyến Bluetooth từ khối phát, truyền dữ liệu nối tiếp vào chân RX (PA10) của vi điều khiển.
-    \item \textbf{Driver cầu H TB6612FNG:} Nhận 2 kênh xung PWM (PA0, PA1) và các chân điều hướng GPIO (PA2, PA3, PA4, PA5) để điều khiển tốc độ và chiều quay của các động cơ DC.
+    \item \textbf{Driver cầu H TB6612FNG:} Sử dụng hai module driver cầu H để điều khiển độc lập 4 bánh xe DC. Hệ thống cấu hình 4 kênh xung PWM của Timer 2 (PA0, PA1, PA2, PA3) cùng các chân điều hướng GPIO (PB0, PB1, PB10, PB11, PB13, PB14, PB15, PA8) để kiểm soát tốc độ và chiều quay của từng động cơ.
     \item \textbf{Động cơ DC chổi than:} 4 động cơ DC kèm hộp số giảm tốc và bánh xe cao su để tạo lực kéo cho xe.
     \item \textbf{Khối nguồn khối thu:} Sử dụng pack pin Li-ion \qty{7.4}{\volt} cấp nguồn trực tiếp cho driver TB6612\-FNG chạy động cơ. Module hạ áp Buck LM2596 được sử dụng để hạ áp xuống \qty{5}{\volt} (và tiếp tục ổn áp xuống \qty{3.3}{\volt} thông qua mạch AMS1117) cấp nguồn cho vi điều khiển và module Blue\-tooth, đảm bảo hệ thống hoạt động ổn định và chống nhiễu sụt áp khi động cơ vận hành.
 \end{itemize}
@@ -120,7 +120,7 @@ Thuật toán khối phát hoạt động theo mô hình vòng lặp vô hạn (
     \item Tính toán góc nghiêng: Áp dụng công thức hàm lượng giác để xác định góc Pitch và Roll.
     \item Xử lý dải chết (Deadzone): Nếu góc nghiêng nhỏ hơn $8^\circ$, coi như tay nằm ngang (Lệnh Dừng). Nếu vượt quá $8^\circ$, hệ thống bắt đầu tính toán giá trị điều khiển và ánh xạ góc nghiêng sang mức tốc độ PWM tương ứng theo hàm phi tuyến.
     \item Truyền dữ liệu: Đóng gói ký tự điều khiển (tiến, lùi, trái, phải, dừng) và gửi ra cổng USART1.
-    \item Trì hoãn (Delay): Chờ \qty{50}{\milli\second} trước khi lặp lại chu kỳ mới.
+    \item Trì hoãn (Delay): Chờ \qty{10}{\milli\second} trước khi lặp lại chu kỳ mới.
 \end{itemize}
 
 \subsubsection{Giải thuật khối thu}
@@ -190,14 +190,14 @@ STATE\_FORWARD / BACKWARD / LEFT / RIGHT & STATE\_STOP & Góc Pitch và Roll n�
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{Drawio/Transmitter_FSP.drawio.pdf}
+    \includegraphics[width=\textwidth]{Drawio/Transmitter_FSM.drawio.pdf}
     \caption{Sơ đồ máy trạng thái khối phát}
     \label{fig:receiver-fsm}
 \end{figure}
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{Drawio/Receiver_FSP.drawio.pdf}
+    \includegraphics[width=\textwidth]{Drawio/Receiver_FSM.drawio.pdf}
     \caption{Sơ đồ máy trạng thái khối thu}
     \label{fig:transmitter-fsm}
 \end{figure}

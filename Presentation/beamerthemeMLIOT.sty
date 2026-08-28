@@ -1,0 +1,302 @@
+%% beamerthemeMLIOT.sty
+%% Custom Beamer theme for ML IoT Lab
+%% HCMUT EE Machine Learning & IoT Lab
+%% Faculty of Electrical & Electronics Engineering, HCMUT
+
+\ProvidesPackage{beamerthemeMLIOT}[2026/06/12 ML IoT Lab Beamer Theme]
+
+\RequirePackage{tikz}
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{ifthen}
+\RequirePackage{calc}
+\RequirePackage{etoolbox}
+\RequirePackage{microtype}
+
+% ---------------------------------------------------------------
+% Colour palette (deep ocean blue, matched to ML IoT logo gradient)
+% ---------------------------------------------------------------
+\definecolor{MLIOTnavy}     {HTML}{003580}   % Brand navy (bars, titles, structure)
+\definecolor{MLIOTblue}     {HTML}{0000FF}   % Brand bright blue (links / small accents)
+\definecolor{MLIOTdarkblue} {HTML}{00224F}   % Darker shade of the navy
+\definecolor{MLIOTink}      {HTML}{1C2230}   % Near-black ink (body text)
+\definecolor{MLIOTaccent}   {HTML}{0000FF}   % Author / link blue (brand bright blue)
+\definecolor{MLIOTaqua}     {HTML}{0000FF}   % Secondary accent (brand bright blue)
+\definecolor{MLIOTgold}     {HTML}{E8A33D}   % Sunset gold - separators / superscripts
+\definecolor{MLIOTcoral}    {HTML}{EE6C4D}   % Alert accent (coral)
+\definecolor{MLIOTlight}    {HTML}{E4ECF5}   % Light blue tint (boxes)
+\definecolor{MLIOTwhite}    {HTML}{FFFFFF}
+\definecolor{MLIOTbglight}  {HTML}{F2F5F9}   % Soft blue-grey tint (block bodies, from report)
+\definecolor{MLIOTfooter}   {HTML}{003580}   % Footer bar colour
+
+% ---------------------------------------------------------------
+% Font setup
+% ---------------------------------------------------------------
+\usefonttheme{serif}
+\setbeamerfont{title}{family=\rmfamily, size=\Large, series=\bfseries}
+\setbeamerfont{frametitle}{family=\rmfamily, size=\normalsize, series=\bfseries}
+\setbeamerfont{author}{family=\rmfamily, size=\small}
+\setbeamerfont{institute}{family=\rmfamily, size=\footnotesize}
+\setbeamerfont{date}{family=\rmfamily, size=\footnotesize}
+\setbeamerfont{footline}{size=\footnotesize}
+\setbeamerfont{block title}{family=\rmfamily, series=\bfseries, size=\small}
+\setbeamerfont{itemize/enumerate body}{size=\footnotesize}
+\setbeamerfont{itemize/enumerate subbody}{size=\scriptsize}
+\setbeamerfont{block body}{size=\footnotesize}
+\setbeamerfont{block body alerted}{size=\footnotesize}
+\setbeamerfont{block body example}{size=\footnotesize}
+\setbeamerfont{bibliography item}{size=\footnotesize}
+\setbeamerfont{bibliography entry author}{size=\footnotesize}
+\setbeamerfont{bibliography entry title}{size=\footnotesize}
+\setbeamerfont{bibliography entry location}{size=\footnotesize}
+\setbeamerfont{bibliography entry note}{size=\footnotesize}
+
+
+% ---------------------------------------------------------------
+% Colour theme
+% ---------------------------------------------------------------
+\setbeamercolor{palette primary}   {bg=MLIOTnavy,    fg=MLIOTwhite}
+\setbeamercolor{palette secondary} {bg=MLIOTnavy,    fg=MLIOTwhite}
+\setbeamercolor{palette tertiary}  {bg=MLIOTdarkblue,fg=MLIOTwhite}
+\setbeamercolor{structure}         {fg=MLIOTnavy}
+\setbeamercolor{frametitle}        {bg=MLIOTnavy,    fg=MLIOTwhite}
+\setbeamercolor{title}             {fg=MLIOTnavy}
+\setbeamercolor{author}            {fg=MLIOTaccent}
+\setbeamercolor{institute}         {fg=MLIOTnavy}
+\setbeamercolor{date}              {fg=MLIOTnavy}
+\setbeamercolor{normal text}       {fg=MLIOTink,     bg=MLIOTwhite}
+\setbeamercolor{alerted text}      {fg=MLIOTcoral}
+\setbeamercolor{example text}      {fg=MLIOTblue}
+\setbeamercolor{block title}       {bg=MLIOTnavy,    fg=MLIOTwhite}
+\setbeamercolor{block body}        {bg=MLIOTbglight, fg=MLIOTink}
+\setbeamercolor{block title alerted}{bg=MLIOTcoral,  fg=MLIOTwhite}
+\setbeamercolor{block body alerted} {bg=MLIOTlight,  fg=MLIOTink}
+\setbeamercolor{itemize item}      {fg=MLIOTgold}
+\setbeamercolor{itemize subitem}   {fg=MLIOTcoral}
+\setbeamercolor{enumerate item}    {fg=MLIOTcoral}
+\setbeamercolor{footline}          {bg=MLIOTfooter,  fg=MLIOTwhite}
+\setbeamercolor{headline}          {bg=MLIOTnavy,    fg=MLIOTwhite}
+\setbeamercolor{separation line}   {bg=MLIOTgold}
+
+% ---------------------------------------------------------------
+% Inner theme - bullet shapes
+% ---------------------------------------------------------------
+\useinnertheme{default}
+\setbeamertemplate{itemize item}{\small\raise0.5pt\hbox{\textcolor{MLIOTgold}{$\blacktriangleright$}}}
+\setbeamertemplate{itemize subitem}{\footnotesize\raise0.5pt\hbox{\textcolor{MLIOTcoral}{$\triangleright$}}}
+\setbeamertemplate{enumerate item}{\textcolor{MLIOTcoral}{\insertenumlabel.}}
+
+% ---------------------------------------------------------------
+% Navigation symbols - hide them
+% ---------------------------------------------------------------
+\setbeamertemplate{navigation symbols}{}
+
+% ---------------------------------------------------------------
+% HEADLINE - Cleared out (merged into frametitle)
+% ---------------------------------------------------------------
+\setbeamertemplate{headline}{}
+
+% ---------------------------------------------------------------
+% FRAMETITLE - Single merged banner with logo and slide title
+% ---------------------------------------------------------------
+\setbeamertemplate{frametitle}{%
+  \begin{tikzpicture}[remember picture, overlay]
+
+    %% 1. Full-width navy header bar (spans the entire width)
+    \fill[MLIOTnavy]
+        (current page.north west) rectangle
+        ([yshift=-1.1cm] current page.north east);
+
+    %% 2. Thin gold separation line at the bottom of the banner
+    \fill[MLIOTgold]
+        ([yshift=-1.1cm] current page.north west) rectangle
+        ([yshift=-1.14cm] current page.north east);
+
+    %% 3. Right: ML IoT banner (white wordmark, made for dark bg)
+    \node[anchor=east]
+        at ([xshift=-0.4cm, yshift=-0.55cm] current page.north east)
+        {\includegraphics[height=0.8cm]{mliot_banner.png}};
+
+    %% 4. Slide title text (vertically centred in the bar)
+    \node[anchor=west, text=MLIOTwhite, font=\Large\bfseries\rmfamily]
+        at ([xshift=0.5cm, yshift=-0.55cm] current page.north west)
+        {\vphantom{Ag}\insertframetitle};
+
+  \end{tikzpicture}%
+
+  %% Push the actual slide content down below the banner
+  \vspace{0.8cm}
+}
+
+% ---------------------------------------------------------------
+% FOOTLINE - deep ocean bar with date | lab | page
+% ---------------------------------------------------------------
+\setbeamertemplate{footline}{%
+  \begin{beamercolorbox}[wd=\paperwidth, ht=0.48cm, dp=0.2cm,
+        leftskip=0.4cm, rightskip=0.4cm]{footline}%
+    \usebeamerfont{footline}%
+    \rlap{\insertframenumber}%
+    \hfill Machine Learning \& IoT Lab\hfill
+    \llap{\insertshortdate}%
+  \end{beamercolorbox}%
+}
+
+% ---------------------------------------------------------------
+% TITLE PAGE template
+% ---------------------------------------------------------------
+\defbeamertemplate*{title page}{MLIOT}[1][]{%
+  \begin{tikzpicture}[remember picture, overlay]
+
+    %% 1. Full-width navy header bar (spans the entire width)
+    \fill[MLIOTnavy]
+        (current page.north west) rectangle
+        ([yshift=-1.65cm] current page.north east);
+
+    %% 2. Thin gold separation line at the bottom of the top banner
+    \fill[MLIOTgold]
+        ([yshift=-1.65cm] current page.north west) rectangle
+        ([yshift=-1.69cm] current page.north east);
+
+    %% Left: Lab name (white text on the navy bar)
+    \node[anchor=west, text=MLIOTwhite, font=\normalsize\bfseries\rmfamily]
+        at ([xshift=0.5cm, yshift=-0.825cm] current page.north west)
+        {\vphantom{Ag}HCMUT EE Machine Learning \& IoT Lab};
+
+    %% Right: ML IoT banner (white wordmark, made for dark bg)
+    \node[anchor=east]
+        at ([xshift=-0.5cm, yshift=-0.825cm] current page.north east)
+        {\includegraphics[height=1.1cm]{mliot_banner.png}};
+
+    %% Bottom deep-ocean bar with thin gold line on top
+    \fill[MLIOTnavy] ([yshift=0.55cm] current page.south west) rectangle
+        (current page.south east);
+    \fill[MLIOTgold] ([yshift=0.55cm] current page.south west) rectangle
+        ([yshift=0.59cm] current page.south east);
+
+    %% Footer text
+    \node[anchor=west, text=MLIOTwhite, font=\tiny\rmfamily]
+        at ([xshift=0.3cm, yshift=0.275cm] current page.south west)
+        {\insertinstitute};
+    \node[anchor=east, text=MLIOTwhite, font=\scriptsize\rmfamily]
+        at ([xshift=-0.3cm, yshift=0.275cm] current page.south east)
+        {Paper ID: \paperid};
+  \end{tikzpicture}%
+
+  %% Lock space below the top banner so the title does not float up
+  \vspace*{1.45cm}
+
+  \begin{center}
+    % Title box
+    \begin{beamercolorbox}[wd=0.88\paperwidth, rounded=true, shadow=false,
+          sep=10pt, center, colsep*=0pt]{block body alerted}%
+      \usebeamerfont{title}\color{MLIOTnavy}\inserttitle%
+    \end{beamercolorbox}
+    \vspace{0.4em}
+
+    % Authors
+    {\usebeamerfont{author}\color{MLIOTnavy}\insertauthor}\\[0.4em]
+
+    % Affiliations
+    {\usebeamerfont{institute}\color{MLIOTnavy}\affiliations}\\[0.4em]
+
+    % Corresponding author
+    {\scriptsize\rmfamily\color{MLIOTnavy}\correspondingauthor}\\[0.4em]
+
+    % Small demarcation line (gold)
+    {\color{MLIOTgold}\rule{3cm}{0.5pt}}\\[0.4em]
+
+    % Lab and institute info
+    {\scriptsize\rmfamily\color{MLIOTnavy}Machine Learning \& IoT Lab (ML IoT)}\\
+    {\scriptsize\rmfamily\color{MLIOTnavy}Ho Chi Minh City University of Technology (HCMUT)}
+  \end{center}
+  \vspace*{0.1cm} % Small safety gap above the bottom banner
+}
+% ---------------------------------------------------------------
+% Convenience command for paper metadata
+% ---------------------------------------------------------------
+\newcommand{\paperid}{}
+\newcommand{\setPaperID}[1]{\renewcommand{\paperid}{#1}}
+
+\newcommand{\affiliations}{}
+\newcommand{\setAffiliations}[1]{\renewcommand{\affiliations}{#1}}
+
+\newcommand{\correspondingauthor}{}
+\newcommand{\setCorrespondingAuthor}[1]{\renewcommand{\correspondingauthor}{#1}}
+
+% ---------------------------------------------------------------
+% Three-column methodology layout environment
+% ---------------------------------------------------------------
+\newenvironment{methodcols}{%
+  \begin{columns}[T]%
+}{%
+  \end{columns}%
+}
+
+\newcommand{\methodcol}[2]{%
+  \begin{column}{0.32\textwidth}
+    \begin{block}{#1}
+      #2
+    \end{block}
+  \end{column}
+}
+
+% ---------------------------------------------------------------
+% Thank-you / acknowledgements slide
+% ---------------------------------------------------------------
+\newcommand{\thankyouslide}[1]{%
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture, overlay]
+
+      %% Top deep-ocean bar
+      \fill[MLIOTnavy] (current page.north west) rectangle
+          ([yshift=-1.1cm] current page.north east);
+
+      %% Thin gold separation line
+      \fill[MLIOTgold] ([yshift=-1.1cm] current page.north west) rectangle
+          ([yshift=-1.14cm] current page.north east);
+
+      %% ML IoT banner centered in the bar (white wordmark on dark bg)
+      \node[anchor=center]
+          at ([yshift=-0.55cm] current page.north)
+          {\includegraphics[height=0.8cm]{mliot_banner.png}};
+
+      %% Bottom deep-ocean bar with thin gold line on top
+      \fill[MLIOTnavy] ([yshift=0.55cm] current page.south west) rectangle
+          (current page.south east);
+      \fill[MLIOTgold] ([yshift=0.55cm] current page.south west) rectangle
+          ([yshift=0.59cm] current page.south east);
+
+      %% Footer text
+      \node[anchor=center, text=MLIOTwhite, font=\footnotesize\rmfamily]
+          at ([yshift=0.275cm] current page.south)
+          {Machine Learning \& IoT Lab, Faculty of Electrical \& Electronics Engineering, HCMUT};
+
+      %% Centered content nodes (absolute centering relative to page center)
+      
+      % 1. Thank You Text
+      \node[anchor=center] at ([yshift=2.6cm] current page.center) {
+        {\fontsize{36}{42}\selectfont\bfseries\rmfamily\color{MLIOTnavy}Thank You}
+      };
+
+      % 2. Separation Line
+      \node[anchor=center] at ([yshift=1.9cm] current page.center) {
+        {\color{MLIOTgold}\rule{6cm}{0.8pt}}
+      };
+
+      % 3. Acknowledgements box
+      \node[anchor=center] at ([yshift=0.4cm] current page.center) {
+        \begin{beamercolorbox}[wd=0.70\paperwidth, rounded=true, sep=10pt, center]{block body alerted}%
+          \centering
+          {\small\bfseries\rmfamily\color{MLIOTblue}Acknowledgements}\\[0.5em]
+          {\footnotesize\rmfamily\color{MLIOTink}#1}%
+        \end{beamercolorbox}%
+      };
+
+      % 4. Lab logo
+      \node[anchor=center] at ([yshift=-2.4cm] current page.center) {
+        \includegraphics[height=1.6cm]{mliot_logo.png}
+      };
+
+    \end{tikzpicture}
+  \end{frame}%
+}
