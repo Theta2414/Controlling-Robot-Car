@@ -58,7 +58,6 @@ User Input / Motion Sensor
    Control Processing
           ↓
   Wireless Transmission
-
 ```
 
 The transmitter continuously reads the input data, processes the corresponding control information, and sends the resulting command to the receiver.
@@ -83,7 +82,6 @@ Direction + PWM Generation
    Motor Driver
         ↓
     DC Motors
-
 ```
 
 This architecture separates user interaction from the motor-control system and allows the robot to be controlled remotely.
@@ -131,7 +129,6 @@ Accelerometer + Gyroscope
     Movement Decision
            ↓
      Control Command
-
 ```
 
 The resulting tilt angle is then mapped to a control value used by the system.
@@ -140,14 +137,12 @@ The operating angle is limited to:
 
 ```text
 -45° ≤ θ ≤ +45°
-
 ```
 
 and the corresponding control value is mapped to:
 
 ```text
 -100 ≤ u ≤ +100
-
 ```
 
 A dead zone is also applied around the neutral position to prevent small sensor fluctuations from unintentionally moving the robot.
@@ -164,7 +159,6 @@ Left ←---  0° ---→ Right
         Negative
            ↓
         Backward
-
 ```
 
 The exact movement mapping depends on the control logic implemented in the transmitter firmware.
@@ -215,7 +209,6 @@ The communication flow can be represented as:
                   │
                   ↓
               Robot Car
-
 ```
 
 The communication system is designed for real-time command transmission so that changes in the transmitter input are reflected by the robot car with low delay.
@@ -240,7 +233,6 @@ The basic control structure is:
    Motor Driver
         ↓
     DC Motors
-
 ```
 
 Different combinations of motor direction and PWM duty cycle are used to achieve forward, backward, left, right, and stop movements.
@@ -287,7 +279,6 @@ Calculate Pitch / Roll
  Transmit Command
         ↓
      Repeat
-
 ```
 
 The detailed transmitter flowchart is shown below:
@@ -327,7 +318,6 @@ Set Motor Direction
    Drive Motors
         ↓
       Repeat
-
 ```
 
 The detailed receiver flowchart is shown below:
@@ -343,21 +333,18 @@ The angle is first limited to the valid operating range:
 
 ```text
 -45° ≤ θ ≤ +45°
-
 ```
 
 Then it is mapped to the control range:
 
 ```text
 -100 ≤ u ≤ +100
-
 ```
 
 A simplified linear mapping can be expressed as:
 
 ```text
 u = (θ / 45) × 100
-
 ```
 
 where:
@@ -369,7 +356,6 @@ A dead zone is applied around the neutral position:
 
 ```text
 -5° < θ < +5°
-
 ```
 
 When the measured angle is inside this range, the control output is set to zero.
@@ -392,7 +378,6 @@ Generate Movement Command
    Wireless Transmission
            ↓
       Motor Control
-
 ```
 
 ## 10. Timing and Real-Time Control
@@ -433,7 +418,6 @@ This behavior can be represented as:
     STOP        Process command
                      ↓
                Motor Control
-
 ```
 
 A communication timeout or invalid-data handling mechanism can also be added to improve the safety of the system.
@@ -481,7 +465,6 @@ Write / Modify Firmware
      Flash STM32
           ↓
      Test System
-
 ```
 
 The transmitter and receiver firmware are built and programmed separately.
@@ -572,7 +555,6 @@ Future Improvements
      ├── Battery Monitoring
      ├── Improved Communication Protocol
      └── More Advanced Control Algorithms
-
 ```
 
 ## 18. Conclusion
