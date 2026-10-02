@@ -1,0 +1,110 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, patterns}
+
+\begin{document}
+\begin{tikzpicture}[font=\small, >=stealth, scale=0.95]
+
+    % Vùng màu nền các Sector
+    % 1. Góc I: Tiến - Phải
+    \fill[green!10] (1.5, 1.5) rectangle (7.0, 7.0);
+    % 2. Góc II: Tiến - Trái
+    \fill[cyan!10] (-7.0, 1.5) rectangle (-1.5, 7.0);
+    % 3. Góc III: Lùi - Trái
+    \fill[orange!10] (-7.0, -7.0) rectangle (-1.5, -1.5);
+    % 4. Góc IV: Lùi - Phải
+    \fill[purple!10] (1.5, -7.0) rectangle (7.0, -1.5);
+
+    % Các trục chính
+    % Tiến thẳng (Forward)
+    \fill[blue!10] (-1.5, 1.5) rectangle (1.5, 7.0);
+    % Lùi thẳng (Backward)
+    \fill[blue!10] (-1.5, -7.0) rectangle (1.5, -1.5);
+    % Xoay phải (Spin Right)
+    \fill[yellow!15] (1.5, -1.5) rectangle (7.0, 1.5);
+    % Xoay trái (Spin Left)
+    \fill[yellow!15] (-7.0, -1.5) rectangle (-1.5, 1.5);
+
+    % Vùng chết (Deadzone / Neutral)
+    \fill[red!15] (-1.5, -1.5) rectangle (1.5, 1.5);
+    \draw[red!60!black, thick, dashed] (-1.5, -1.5) rectangle (1.5, 1.5);
+    \node[align=center, red!70!black, font=\footnotesize\bfseries] at (0, 0) {VÙNG CHẾT\\(STOP)\\$|F|, |T| \le 15$};
+
+    % Lưới toạ độ và khung biên
+    \draw[gray!30, step=1.0] (-7.0, -7.0) grid (7.0, 7.0);
+    \draw[black!70, thick] (-7.0, -7.0) rectangle (7.0, 7.0);
+
+    % Trục toạ độ F và T
+    \draw[thick, ->, line width=1.2pt] (-7.5, 0) -- (7.8, 0) node[right, font=\bfseries] {$T$ (Turn: Nghiêng ngang)};
+    \draw[thick, ->, line width=1.2pt] (0, -7.5) -- (0, 7.8) node[above, font=\bfseries] {$F$ (Forward: Nghiêng dọc)};
+
+    % Vạch chia độ
+    \node[below, font=\scriptsize] at (7.0, 0) {$+80$};
+    \node[below, font=\scriptsize] at (-7.0, 0) {$-80$};
+    \node[below, font=\scriptsize] at (1.5, 0) {$+15$};
+    \node[below, font=\scriptsize] at (-1.5, 0) {$-15$};
+
+    \node[left, font=\scriptsize] at (0, 7.0) {$+80$};
+    \node[left, font=\scriptsize] at (0, -7.0) {$-80$};
+    \node[left, font=\scriptsize] at (0, 1.5) {$+15$};
+    \node[left, font=\scriptsize] at (0, -1.5) {$-15$};
+
+    % Nhãn và công thức cho các vùng chuyển động
+    % --- TIẾN THẲNG ---
+    \node[align=center, blue!70!black] at (0, 4.2) {
+        \textbf{TIẾN THẲNG (Forward)}\\
+        \footnotesize $V_L = F, \quad V_R = F$
+    };
+
+    % --- LÙI THẲNG ---
+    \node[align=center, blue!70!black] at (0, -4.2) {
+        \textbf{LÙI THẲNG (Backward)}\\
+        \footnotesize $V_L = F, \quad V_R = F$
+    };
+
+    % --- XOAY PHẢI TẠI CHỖ ---
+    \node[align=center, orange!80!black] at (4.2, 0) {
+        \textbf{XOAY PHẢI (Spin R)}\\
+        \footnotesize $V_L = T, \quad V_R = -T$
+    };
+
+    % --- XOAY TRÁI TẠI CHỖ ---
+    \node[align=center, orange!80!black] at (-4.2, 0) {
+        \textbf{XOAY TRÁI (Spin L)}\\
+        \footnotesize $V_L = -|T|, \quad V_R = |T|$
+    };
+
+    % --- GÓC I: TIẾN - PHẢI ---
+    \node[align=center, green!50!black] at (4.3, 4.3) {
+        \textbf{TIẾN -- PHẢI (Forward-Right)}\\
+        \footnotesize $V_L = F$ (bánh ngoài)\\
+        \footnotesize $V_R = F \cdot \frac{80 - T}{80} \ge 0$ (bánh trong)
+    };
+
+    % --- GÓC II: TIẾN - TRÁI ---
+    \node[align=center, cyan!60!black] at (-4.3, 4.3) {
+        \textbf{TIẾN -- TRÁI (Forward-Left)}\\
+        \footnotesize $V_R = F$ (bánh ngoài)\\
+        \footnotesize $V_L = F \cdot \frac{80 - |T|}{80} \ge 0$ (bánh trong)
+    };
+
+    % --- GÓC III: LÙI - TRÁI ---
+    \node[align=center, orange!60!black] at (-4.3, -4.3) {
+        \textbf{LÙI -- TRÁI (Backward-Left)}\\
+        \footnotesize $V_R = F < 0$ (lùi nhanh)\\
+        \footnotesize $V_L = F \cdot \frac{80 - |T|}{80} \le 0$ (lùi chậm)
+    };
+
+    % --- GÓC IV: LÙI - PHẢI ---
+    \node[align=center, purple!70!black] at (4.3, -4.3) {
+        \textbf{LÙI -- PHẢI (Backward-Right)}\\
+        \footnotesize $V_L = F < 0$ (lùi nhanh)\\
+        \footnotesize $V_R = F \cdot \frac{80 - T}{80} \le 0$ (lùi chậm)
+    };
+
+\end{tikzpicture}
+\end{document}

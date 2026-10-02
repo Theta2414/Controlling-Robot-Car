@@ -1055,6 +1055,104 @@ f(Roll_{\text{kalman}})
 Điều này tạo ra mối liên hệ trực tiếp giữa góc nghiêng sau Kalman và giá trị điều khiển tiến/lùi hoặc rẽ của hệ thống.
 
 % =========================================================
+% GIẢI THUẬT ĐIỀU KHIỂN ĐỘNG HỌC VI SAI CONG THÍCH NGHI
+% =========================================================
+
+\section{Giải thuật điều khiển động học vi sai cong thích nghi (Adaptive Curvature Drive)}
+\label{sec:curvature-drive}
+
+\subsection{Hạn chế của mô hình phối trộn đại số cổ điển}
+
+Trong các hệ thống robot bánh vi sai (Differential Drive Mobile Robot), giải thuật phối trộn đại số tuyến tính cổ điển (Linear Arcade Mixing) thường được áp dụng rộng rãi với công thức:
+\begin{equation}
+V_L = \mathrm{clamp}(F + T, -100, 100), \qquad V_R = \mathrm{clamp}(F - T, -100, 100)
+\label{eq:classic_mix}
+\end{equation}
+trong đó $F$ là thành phần điều khiển dọc (Forward/Backward), $T$ là thành phần lái ngang (Turn), và $V_L, V_R$ lần lượt là giá trị băm xung cấp cho động cơ bên trái và bên phải.
+
+Mặc dù có cấu trúc tính toán đơn giản, công thức (\ref{eq:classic_mix}) bộc lộ một nhược điểm nghiêm trọng mang tính bản chất: \textbf{hiện tượng đảo chiều quay cưỡng bức (Reverse Spin Lockout)}. Khi người vận hành nghiêng tay ở góc chéo để điều khiển xe vừa tiến vừa rẽ (chẳng hạn Tiến -- Phải với $F = +40$ và $T = +50$), tốc độ tính toán cho bánh bên phải trở thành:
+\begin{equation}
+V_R = 40 - 50 = -10 < 0
+\end{equation}
+Giá trị âm này kích hoạt cầu H đảo chiều điện áp, buộc bánh phải quay lùi trong khi bánh trái đang quay tiến với vận tốc lớn ($V_L = 90$). Hệ quả là robot bị cưỡng bức chuyển đột ngột từ quỹ đạo bo cua tiến sang trạng thái xoay vòng tại chỗ (Spin Turn). Hiện tượng này gây ra:
+\begin{itemize}
+    \item \textbf{Mất lực đẩy quán tính:} Xe bị khựng giật, mất động lượng tiến về phía trước.
+    \item \textbf{Xung dòng điện và sụt áp:} Việc đảo chiều cực tính đột ngột trên cuộn cảm động cơ sinh ra suất điện động cảm ứng ngược (Back-EMF) và dòng khởi động lớn, làm sụt áp nguồn hệ thống và tăng nhiệt độ trên MOSFET của driver TB6612FNG.
+    \item \textbf{Suy giảm trải nghiệm điều khiển:} Người dùng không thể thực hiện các thao tác bo cua vòng cung mềm mại hoặc né tránh vật cản theo phương chéo.
+\end{itemize}
+
+\subsection{Xây dựng mô hình toán học Lái vi sai cong (Curvature Drive)}
+
+Để khắc phục triệt để hiện tượng trên, nhóm tác giả đã nghiên cứu và phát triển \textbf{Giải thuật điều khiển động học vi sai cong thích nghi (Adaptive Curvature Differential Drive)}. Nguyên lý cốt lõi của giải thuật là: \textit{Khi robot có chủ đích di chuyển tịnh tiến ($F \neq 0$), chiều quay của cả hai bên bánh xe phải luôn được bảo toàn đồng hướng ($V_L \cdot V_R \ge 0$). Hành vi bẻ lái đạt được thông qua việc điều biến tỷ lệ suy giảm vận tốc của bánh phía trong vòng cua, thay vì đảo chiều quay của nó.}
+
+Đặt vector trạng thái điều khiển sau bộ lọc Kalman và ánh xạ phi tuyến là:
+\begin{equation}
+\mathbf{u} = \begin{bmatrix} F \\ T \end{bmatrix}, \quad F, T \in [-T_{\max}, +T_{\max}]
+\end{equation}
+với $T_{\max} = 80$ là ngưỡng bão hòa lệnh điều khiển. Ta định nghĩa hệ số tỷ lệ suy giảm vận tốc bánh trong $\eta$ theo mức độ bẻ lái:
+\begin{equation}
+\eta(T) = \max\left(0,\, \frac{T_{\max} - |T|}{T_{\max}}\right) \in [0,\, 1]
+\end{equation}
+
+Quy luật phân phối vận tốc cho hai cụm động cơ được thiết lập theo ba chế độ hoạt động riêng biệt:
+
+\begin{enumerate}
+    \item \textbf{Chế độ Tiến bo cua thích nghi ($F > 0$):}
+    \begin{equation}
+    \begin{cases}
+    V_L = F, \quad V_R = \left\lfloor F \cdot \eta(T) \right\rfloor \ge 0 & \text{khi } T > 0 \quad (\text{Tiến -- Phải}) \\[2mm]
+    V_R = F, \quad V_L = \left\lfloor F \cdot \eta(T) \right\rfloor \ge 0 & \text{khi } T < 0 \quad (\text{Tiến -- Trái}) \\[2mm]
+    V_L = F, \quad V_R = F & \text{khi } T = 0 \quad (\text{Tiến thẳng})
+    \end{cases}
+    \label{eq:forward_curv}
+    \end{equation}
+    Bánh phía ngoài vòng cua đóng vai trò bánh chủ động duy trì toàn bộ động năng tịnh tiến ($V_{\mathrm{out}} = F$), trong khi bánh phía trong giảm tốc độ mượt mà theo góc nghiêng của tay. Khi bẻ lái tối đa ($|T| = T_{\max}$), $\eta = 0$, bánh trong đứng yên làm tâm quay tức thời (Pivot point), giúp xe bo cua góc hẹp nhất mà vẫn giữ nguyên chiều tiến.
+
+    \item \textbf{Chế độ Lùi bo cua thích nghi ($F < 0$):}
+    \begin{equation}
+    \begin{cases}
+    V_L = F, \quad V_R = \left\lfloor F \cdot \eta(T) \right\rfloor \le 0 & \text{khi } T > 0 \quad (\text{Lùi -- Phải}) \\[2mm]
+    V_R = F, \quad V_L = \left\lfloor F \cdot \eta(T) \right\rfloor \le 0 & \text{khi } T < 0 \quad (\text{Lùi -- Trái}) \\[2mm]
+    V_L = F, \quad V_R = F & \text{khi } T = 0 \quad (\text{Lùi thẳng})
+    \end{cases}
+    \label{eq:backward_curv}
+    \end{equation}
+    Cả hai bên bánh đều nhận giá trị âm (quay lùi), bánh trong có độ lớn vận tốc nhỏ hơn, tạo nên chuyển động lùi uốn lượn ổn định.
+
+    \item \textbf{Chế độ Xoay tại chỗ (In-place Spin Turn, $F = 0$):}
+    Khi tín hiệu tịnh tiến nằm trong vùng trung tính ($|F| \le F_{\mathrm{deadzone}}$), hai bên bánh xe mới được phép kích hoạt quay ngược chiều nhau để thực hiện xoay xe tại chỗ:
+    \begin{equation}
+    V_L = T, \qquad V_R = -T
+    \label{eq:spin_turn}
+    \end{equation}
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{tikz/curvature_steering.pdf}
+    \caption{Sơ đồ khối cấu trúc giải thuật điều khiển lái vi sai cong thích nghi}
+    \label{fig:curvature-steering-block}
+\end{figure}
+
+\subsection{Không gian pha điều khiển 8 hướng trong mặt phẳng \texorpdfstring{$(T, F)$}{(T, F)}}
+
+Mặt phẳng pha $(T, F)$ được chia thành 8 phân vùng chuyển động riêng biệt bao quanh vùng chết trung tâm (Neutral Deadzone), như minh họa trên Hình \ref{fig:control-space-8dir}:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.88\textwidth]{tikz/control_space_8dir.pdf}
+    \caption{Không gian trạng thái điều khiển 8 hướng và phân bố vận tốc vi sai trong mặt phẳng pha $(T, F)$}
+    \label{fig:control-space-8dir}
+\end{figure}
+
+Sự phân định không gian trạng thái này mang lại các lợi ích kỹ thuật nổi bật:
+\begin{itemize}
+    \item \textbf{Tính liên tục về mặt động học:} Quỹ đạo chuyển động của xe biến thiên liên tục theo không gian góc nghiêng thực tế của bàn tay người điều khiển, không xuất hiện các điểm gián đoạn vận tốc (Velocity Discontinuities).
+    \item \textbf{Độ bền cơ điện và tuổi thọ linh kiện:} Loại bỏ hoàn toàn các xung quá áp ngược do đổi chiều dòng điện đột ngột trong cuộn cảm động cơ, giúp bảo vệ các khóa bán dẫn MOSFET trong cầu H và kéo dài tuổi thọ của hộp số giảm tốc.
+    \item \textbf{Tương thích đa giao thức:} Khối nhận dữ liệu vừa tiếp nhận dữ liệu liên tục từ cảm biến MPU6050, vừa ánh xạ chuẩn xác các mã ký tự rời rạc ('G', 'I', 'H', 'J') từ các ứng dụng điều khiển Bluetooth tiêu chuẩn.
+\end{itemize}
+
+% =========================================================
 % THUẬT NGỮ
 % =========================================================
 

@@ -1,0 +1,101 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric}
+
+\begin{document}
+\begin{tikzpicture}[
+    font=\small,
+    node distance=0.6cm and 0.8cm,
+    block/.style={
+        draw,
+        rectangle,
+        rounded corners=3pt,
+        minimum width=2.4cm,
+        minimum height=1.0cm,
+        align=center,
+        fill=white,
+        semithick
+    },
+    decision/.style={
+        draw,
+        diamond,
+        aspect=2,
+        align=center,
+        fill=blue!5,
+        semithick,
+        font=\footnotesize
+    },
+    process/.style={
+        draw,
+        rectangle,
+        rounded corners=3pt,
+        minimum width=2.8cm,
+        minimum height=1.1cm,
+        align=center,
+        fill=orange!8,
+        semithick
+    },
+    motorblock/.style={
+        draw,
+        rectangle,
+        rounded corners=3pt,
+        minimum width=2.2cm,
+        minimum height=0.9cm,
+        align=center,
+        fill=green!8,
+        semithick
+    },
+    arrow/.style={
+        ->,
+        >=stealth,
+        thick
+    }
+]
+
+    % Đầu vào góc nghiêng
+    \node (pitch) at (0, 1.2) [block, fill=cyan!8] {Góc $Pitch_{\mathrm{kalman}}$\\(Trục dọc)};
+    \node (roll)  at (0, -1.2) [block, fill=cyan!8] {Góc $Roll_{\mathrm{kalman}}$\\(Trục ngang)};
+
+    % Khối tiền xử lý & Deadzone
+    \node (expo) at (3.4, 0) [block, minimum width=2.8cm] {Ánh xạ phi tuyến\\Exponential \& Deadzone\\$F, T \in [-80, +80]$};
+
+    \draw [arrow] (pitch.east) -| ($(expo.west)+(-0.3, 0.4)$) -- ($(expo.west)+(0, 0.4)$) node[midway, above, font=\scriptsize] {$Pitch$};
+    \draw [arrow] (roll.east)  -| ($(expo.west)+(-0.3, -0.4)$) -- ($(expo.west)+(0, -0.4)$) node[midway, below, font=\scriptsize] {$Roll$};
+
+    % Khối phân loại không gian trạng thái 8 hướng
+    \node (fsm) at (7.3, 0) [decision] {Phân loại\\véc-tơ $(F, T)$};
+    \draw [arrow] (expo) -- (fsm) node[midway, above, font=\scriptsize] {$(F, T)$};
+
+    % 3 nhánh giải thuật
+    \node (spin) at (11.6, 2.0) [process] {\textbf{Xoay tại chỗ (Spin Turn)}\\$F = 0, |T| > 0$\\$V_L = T,\quad V_R = -T$};
+    \node (curv) at (11.6, 0.0) [process, fill=yellow!12] {\textbf{Lái vi sai cong (Curvature)}\\$|F| > 0,\ |T| \ge 0$\\$V_{\mathrm{out}} = F$\\$V_{\mathrm{in}} = F \cdot \frac{T_{\max} - |T|}{T_{\max}}$};
+    \node (stop) at (11.6, -2.0) [process, fill=red!6] {\textbf{Vùng trung tính (Neutral)}\\$F = 0, T = 0$\\$V_L = 0,\quad V_R = 0$};
+
+    \draw [arrow] (fsm.north) |- (spin.west) node[near start, above, font=\scriptsize] {$F = 0$};
+    \draw [arrow] (fsm.east)  -- (curv.west) node[midway, above, font=\scriptsize] {$F \neq 0$};
+    \draw [arrow] (fsm.south) |- (stop.west) node[near start, below, font=\scriptsize] {Deadzone};
+
+    % Khối bão hòa & giới hạn công suất
+    \node (clamp) at (15.8, 0) [block, fill=purple!6] {Bão hòa \& Kẹp dải\\$\mathrm{clamp}(V, -100, 100)$};
+
+    \draw [arrow] (spin.east) -| ($(clamp.west)+(-0.3, 0.4)$) -- ($(clamp.west)+(0, 0.4)$);
+    \draw [arrow] (curv.east) -- (clamp.west) node[midway, above, font=\scriptsize] {$V_L, V_R$};
+    \draw [arrow] (stop.east) -| ($(clamp.west)+(-0.3, -0.4)$) -- ($(clamp.west)+(0, -0.4)$);
+
+    % Bộ điều khiển PWM & Driver
+    \node (driver) at (19.4, 0) [block, fill=blue!8] {TB6612 Driver\\PWM Timer 2\\\& GPIO Dir};
+    \draw [arrow] (clamp) -- (driver) node[midway, above, font=\scriptsize] {$V_L, V_R$};
+
+    % Động cơ
+    \node (m_left)  at (22.5, 0.9)  [motorblock] {Động cơ Trái\\(LF \& LR)};
+    \node (m_right) at (22.5, -0.9) [motorblock] {Động cơ Phải\\(RF \& RR)};
+
+    \draw [arrow] (driver.east) |- (m_left.west);
+    \draw [arrow] (driver.east) |- (m_right.west);
+
+\end{tikzpicture}
+\end{document}
