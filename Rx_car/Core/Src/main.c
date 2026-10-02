@@ -53,6 +53,7 @@ Motor_t motor;
 
 volatile int16_t received_forward = 0;
 volatile int16_t received_turn = 0;
+volatile CarDirection_t current_direction = CAR_STOP;
 volatile uint32_t valid_packet_count = 0;
 volatile uint32_t last_packet_tick = 0;
 /* USER CODE END PV */
@@ -139,6 +140,7 @@ int main(void)
       {
         received_forward = forward;
         received_turn = turn;
+        current_direction = Motor_GetDirection(received_forward, received_turn);
 
         valid_packet_count++;
         last_packet_tick = HAL_GetTick();
@@ -155,6 +157,7 @@ int main(void)
       Motor_Stop(&motor);
       received_forward = 0;
       received_turn = 0;
+      current_direction = CAR_STOP;
     }
   }
   /* USER CODE END 3 */

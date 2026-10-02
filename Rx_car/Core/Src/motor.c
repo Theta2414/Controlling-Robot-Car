@@ -155,15 +155,96 @@ void Motor_Stop(Motor_t *motor)
 }
 
 
+#define CONTROL_MAX_TURN 80
+
 void Motor_SetControl(Motor_t *motor,
                       int16_t forward,
                       int16_t turn)
 {
-    int16_t left =
-        clamp_control(forward + turn);
+    int16_t left = 0;
+    int16_t right = 0;
 
-    int16_t right =
-        clamp_control(forward - turn);
+    if (forward > 0)
+    {
+        /* --- TIẾN (FORWARD / FORWARD-CURVE) --- */
+        if (turn > 0)
+        {
+            /* Tiến - Phải: bánh trái đi nhanh (bánh ngoài), bánh phải giảm tốc (bánh trong) */
+            int16_t turn_factor = CONTROL_MAX_TURN - turn;
+            if (turn_factor < 0) turn_factor = 0;
+
+            left = forward;
+            right = (int16_t)(((int32_t)forward * turn_factor) / CONTROL_MAX_TURN);
+        }
+        else if (turn < 0)
+        {
+            /* Tiến - Trái: bánh phải đi nhanh (bánh ngoài), bánh trái giảm tốc (bánh trong) */
+            int16_t turn_factor = CONTROL_MAX_TURN - (-turn);
+            if (turn_factor < 0) turn_factor = 0;
+
+            right = forward;
+            left = (int16_t)(((int32_t)forward * turn_factor) / CONTROL_MAX_TURN);
+        }
+        else
+        {
+            /* Tiến thẳng */
+            left = forward;
+            right = forward;
+        }
+    }
+    else if (forward < 0)
+    {
+        /* --- LÙI (BACKWARD / BACKWARD-CURVE) --- */
+        if (turn > 0)
+        {
+            /* Lùi - Phải: cả 2 cùng lùi, bánh phải lùi chậm hơn */
+            int16_t turn_factor = CONTROL_MAX_TURN - turn;
+            if (turn_factor < 0) turn_factor = 0;
+
+            left = forward;
+            right = (int16_t)(((int32_t)forward * turn_factor) / CONTROL_MAX_TURN);
+        }
+        else if (turn < 0)
+        {
+            /* Lùi - Trái: cả 2 cùng lùi, bánh trái lùi chậm hơn */
+            int16_t turn_factor = CONTROL_MAX_TURN - (-turn);
+            if (turn_factor < 0) turn_factor = 0;
+
+            right = forward;
+            left = (int16_t)(((int32_t)forward * turn_factor) / CONTROL_MAX_TURN);
+        }
+        else
+        {
+            /* Lùi thẳng */
+            left = forward;
+            right = forward;
+        }
+    }
+    else
+    {
+        /* --- XOAY TẠI CHỖ (SPIN TURN / STOP) --- */
+        if (turn > 0)
+        {
+            /* Xoay phải tại chỗ */
+            left = turn;
+            right = -turn;
+        }
+        else if (turn < 0)
+        {
+            /* Xoay trái tại chỗ */
+            left = turn;
+            right = -turn;
+        }
+        else
+        {
+            /* Dừng hẳn */
+            left = 0;
+            right = 0;
+        }
+    }
+
+    left = clamp_control(left);
+    right = clamp_control(right);
 
     /* Left Front */
     Motor_SetOne(motor,
@@ -192,6 +273,87 @@ void Motor_SetControl(Motor_t *motor,
                  B2IN1_GPIO_Port, B2IN1_Pin,
                  B2IN2_GPIO_Port, B2IN2_Pin,
                  right);
+}
+
+void Motor_Forward(Motor_t *motor, int16_t speed)
+{
+    Motor_SetControl(motor, speed, 0);
+}
+
+void Motor_Backward(Motor_t *motor, int16_t speed)
+{
+    Motor_SetControl(motor, -speed, 0);
+}
+
+void Motor_SpinLeft(Motor_t *motor, int16_t speed)
+{
+    Motor_SetControl(motor, 0, -speed);
+}
+
+void Motor_SpinRight(Motor_t *motor, int16_t speed)
+{
+    Motor_SetControl(motor, 0, speed);
+}
+
+void Motor_ForwardLeft(Motor_t *motor, int16_t speed)
+{
+    Motor_SetControl(motor, speed, -(speed * 6 / 10));
+}
+
+void Motor_ForwardRight(Motor_t *motor, int16_t speed)
+{
+    Motor_SetControl(motor, speed, (speed * 6 / 10));
+}
+
+void Motor_BackwardLeft(Motor_t *motor, int16_t speed)
+{
+    Motor_SetControl(motor, -speed, -(speed * 6 / 10));
+}
+
+void Motor_BackwardRight(Motor_t *motor, int16_t speed)
+{
+    Motor_SetControl(motor, -speed, (speed * 6 / 10));
+}
+
+CarDirection_t Motor_GetDirection(int16_t forward, int16_t turn)
+{
+    const int16_t f_thresh = 15;
+    const int16_t t_thresh = 15;
+
+    if (forward > f_thresh && turn > t_thresh)
+    {
+        return CAR_FORWARD_RIGHT;
+    }
+    if (forward > f_thresh && turn < -t_thresh)
+    {
+        return CAR_FORWARD_LEFT;
+    }
+    if (forward < -f_thresh && turn > t_thresh)
+    {
+        return CAR_BACKWARD_RIGHT;
+    }
+    if (forward < -f_thresh && turn < -t_thresh)
+    {
+        return CAR_BACKWARD_LEFT;
+    }
+    if (forward > f_thresh)
+    {
+        return CAR_FORWARD;
+    }
+    if (forward < -f_thresh)
+    {
+        return CAR_BACKWARD;
+    }
+    if (turn > t_thresh)
+    {
+        return CAR_TURN_RIGHT;
+    }
+    if (turn < -t_thresh)
+    {
+        return CAR_TURN_LEFT;
+    }
+
+    return CAR_STOP;
 }
 
 
