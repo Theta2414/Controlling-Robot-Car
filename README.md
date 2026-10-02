@@ -44,7 +44,7 @@ The system consists of two main parts: a transmitter unit and a receiver unit.
 <img width="1065" height="555" alt="architecture_page-0001" src="https://github.com/user-attachments/assets/0a65ae09-69c4-4aa9-8839-16d57195903b" />
 
 
-### 3.1 Transmitter Unit
+### 3.1. Transmitter Unit
 
 The transmitter is responsible for obtaining the user's control input and converting it into movement commands.
 
@@ -63,7 +63,7 @@ User Input / Motion Sensor
 
 The transmitter continuously reads the input data, processes the corresponding control information, and sends the resulting command to the receiver.
 
-### 3.2 Receiver Unit
+### 3.2. Receiver Unit
 
 The receiver is installed on the robot car.
 
@@ -251,7 +251,7 @@ PWM provides a convenient way to control motor speed while keeping the STM32 in 
 
 The firmware is divided into transmitter-side and receiver-side software.
 
-### 8.1 Transmitter Firmware
+### 8.1. Transmitter Firmware
 
 The transmitter firmware is responsible for:
 
@@ -295,7 +295,7 @@ The detailed transmitter flowchart is shown below:
 <img width="1571" height="1804" alt="Transmitter_Flowchart drawio_page-0001" src="https://github.com/user-attachments/assets/538928e4-a8bd-4272-9473-619627dc3530" />
 
 
-### 8.2 Receiver Firmware
+### 8.2. Receiver Firmware
 
 The receiver firmware is responsible for:
 
@@ -486,7 +486,7 @@ Write / Modify Firmware
 
 The transmitter and receiver firmware are built and programmed separately.
 
-## 14.1 Finite State Machines
+## 14.1. Finite State Machines
 
 The transmitter firmware is organized around initialization, calibration, and active operation states:
 
