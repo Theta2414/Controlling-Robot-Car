@@ -1,4 +1,4 @@
-# Controlling Robot Car – STM32
+# Controlling Robot Car
 
 A wireless robot car control system implemented using STM32. The project uses an STM32-based transmitter and receiver architecture to control the movement of a robot car remotely. Motion commands are generated from user input and transmitted wirelessly to the robot, where the received commands are processed to control the motors.
 
@@ -41,8 +41,8 @@ PWM signals are used to control the motor speed, while the motor driver handles 
 
 The system consists of two main parts: a transmitter unit and a receiver unit.
 
-![System Architecture](readme_images/architecture-1.png)
-*Figure 1. Overall system architecture.*
+<img width="1065" height="555" alt="architecture_page-0001" src="https://github.com/user-attachments/assets/0a65ae09-69c4-4aa9-8839-16d57195903b" />
+
 
 ### 3.1 Transmitter Unit
 
