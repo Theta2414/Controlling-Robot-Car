@@ -53,11 +53,11 @@ The general processing flow is:
 ```text
 User Input / Motion Sensor
           ↓
-     STM32 Transmitter
+    STM32 Transmitter
           ↓
    Control Processing
           ↓
-   Wireless Transmission
+  Wireless Transmission
 
 ```
 
@@ -72,16 +72,16 @@ It receives the wireless control commands and converts them into motor control s
 The general processing flow is:
 
 ```text
-Wireless Receiver
-       ↓
-STM32 Receiver
-       ↓
-Command Processing
-       ↓
+ Wireless Receiver
+        ↓
+  STM32 Receiver
+        ↓
+ Command Processing
+        ↓
 Direction + PWM Generation
-       ↓
+        ↓
    Motor Driver
-       ↓
+        ↓
     DC Motors
 
 ```
@@ -118,19 +118,19 @@ A Kalman filter is used to combine information from the accelerometer and gyrosc
 The general processing chain is:
 
 ```text
-MPU6050
-   ↓
+        MPU6050
+           ↓
 Accelerometer + Gyroscope
-   ↓
-Sensor Processing
-   ↓
-Kalman Filter
-   ↓
-Pitch / Roll Angle
-   ↓
-Movement Decision
-   ↓
-Control Command
+           ↓
+    Sensor Processing
+           ↓
+     Kalman Filter
+           ↓
+    Pitch / Roll Angle
+           ↓
+    Movement Decision
+           ↓
+     Control Command
 
 ```
 
@@ -157,11 +157,11 @@ For example:
 ```text
         Forward
            ↑
-       Positive
+        Positive
            |
-Left ←--- 0° ---→ Right
+Left ←---  0° ---→ Right
            |
-       Negative
+        Negative
            ↓
         Backward
 
@@ -182,30 +182,30 @@ The communication flow can be represented as:
 ```text
              TRANSMITTER
                   │
-       MPU6050 / User Input
+          MPU6050 / User Input
                   │
                   ↓
-        Control Processing
+           Control Processing
                   │
                   ↓
-       Wireless Transmission
+          Wireless Transmission
                   │
-            ~~~~~~~~~~~
-             Wireless
-           Communication
-            ~~~~~~~~~~~
+             ~~~~~~~~~~~
+               Wireless
+             Communication
+             ~~~~~~~~~~~
                   │
                   ↓
-        Wireless Reception
+          Wireless Reception
                   │
                   ↓
               RECEIVER
                   │
                   ↓
-        Command Processing
+          Command Processing
                   │
                   ↓
-         Motor Control Logic
+          Motor Control Logic
                   │
                   ↓
             PWM + Direction
@@ -214,7 +214,7 @@ The communication flow can be represented as:
             Motor Driver
                   │
                   ↓
-             Robot Car
+              Robot Car
 
 ```
 
@@ -229,17 +229,17 @@ The direction of each motor is determined by the received movement command, whil
 The basic control structure is:
 
 ```text
-Received Command
-       ↓
-Movement Decision
-       ↓
-Direction Control
-       +
-PWM Generation
-       ↓
-Motor Driver
-       ↓
-DC Motors
+ Received Command
+        ↓
+ Movement Decision
+        ↓
+ Direction Control
+        +
+  PWM Generation
+        ↓
+   Motor Driver
+        ↓
+    DC Motors
 
 ```
 
@@ -270,30 +270,30 @@ The simplified software flow is:
 ```text
 System Initialization
         ↓
-Read MPU6050
+   Read MPU6050
         ↓
 Calculate Sensor Data
         ↓
-Kalman Filter
+   Kalman Filter
         ↓
 Calculate Pitch / Roll
         ↓
-Angle Mapping
+  Angle Mapping
         ↓
-Dead Zone
+    Dead Zone
         ↓
-Generate Command
+ Generate Command
         ↓
-Transmit Command
+ Transmit Command
         ↓
-Repeat
+     Repeat
 
 ```
 
 The detailed transmitter flowchart is shown below:
 
-![Transmitter Flowchart](readme_images/transmitter_flowchart-1.png)
-*Figure 2. Transmitter firmware flowchart.*
+<img width="1571" height="1804" alt="Transmitter_Flowchart drawio_page-0001" src="https://github.com/user-attachments/assets/538928e4-a8bd-4272-9473-619627dc3530" />
+
 
 ### 8.2 Receiver Firmware
 
@@ -312,28 +312,28 @@ The simplified software flow is:
 ```text
 System Initialization
         ↓
-Wait for Command
+ Wait for Command
         ↓
-Receive Data
+   Receive Data
         ↓
-Decode Command
+  Decode Command
         ↓
 Determine Movement
         ↓
 Set Motor Direction
         ↓
-Generate PWM
+   Generate PWM
         ↓
-Drive Motors
+   Drive Motors
         ↓
-Repeat
+      Repeat
 
 ```
 
 The detailed receiver flowchart is shown below:
 
-![Receiver Flowchart](readme_images/receiver_flowchart-1.png)
-*Figure 3. Receiver firmware flowchart.*
+<img width="1438" height="1642" alt="Receiver_Flowchart drawio_page-0001" src="https://github.com/user-attachments/assets/6e100c22-6f34-4a7e-8576-65bb5a8feedd" />
+
 
 ## 9. Control Algorithm
 
@@ -379,19 +379,19 @@ This prevents small sensor noise and minor hand movements from causing unwanted 
 The overall control process is therefore:
 
 ```text
-Tilt Angle
-    ↓
-Limit to ±45°
-    ↓
-Map to ±100
-    ↓
-Apply Dead Zone
-    ↓
+       Tilt Angle
+           ↓
+      Limit to ±45°
+           ↓
+       Map to ±100
+           ↓
+     Apply Dead Zone
+           ↓
 Generate Movement Command
-    ↓
-Wireless Transmission
-    ↓
-Motor Control
+           ↓
+   Wireless Transmission
+           ↓
+      Motor Control
 
 ```
 
@@ -452,48 +452,16 @@ The major connections include:
 | Wireless Interface | Wireless Module  | Transmitter/receiver communication |
 | ST-Link            | STM32            | Programming and debugging          |
 
-A detailed pinout schematic can be added here:
 
-[**Controlling Robot Car – Pinout Schematic**](https://chatgpt.com/c/ADD_PINOUT_LINK_HERE)
+## 13. Demo Video
 
-## 13. Project Structure
+A demonstration video showing the robot car and its wireless control system.
 
-The repository is organized into separate sections for the transmitter, receiver, documentation, presentation, and demonstration materials.
-
-```text
-Controlling-Robot-Car/
-│
-├── Demo/
-│   └── Demonstration materials
-│
-├── Presentation/
-│   └── Project presentation
-│
-├── Report/
-│   └── Project report and documentation
-│
-├── Rx_car/
-│   └── Receiver-side firmware
-│
-├── Tx_car/
-│   └── Transmitter-side firmware
-│
-├── README.md
-└── .gitignore
-
-```
-
-The separation between `Tx_car` and `Rx_car` makes it easier to develop, test, and maintain the two sides of the wireless control system independently.
-
-## 14. Demo Video
-
-A demonstration video showing the robot car and its wireless control system:
-
-▶️ [**Controlling Robot Car – Demo Video**](https://chatgpt.com/c/ADD_DEMO_VIDEO_LINK_HERE)
+🎥 [Watch the Robot Car Demonstration Video](https://drive.google.com/file/d/1_pdBoHEz-EHRgsnchu68yCIKwLp6gopW/view?usp=sharing)
 
 The demonstration shows the response of the robot car to different control inputs and verifies the communication between the transmitter and receiver.
 
-## 15. Build and Flash
+## 14. Build and Flash
 
 The project is developed for the STM32 microcontroller using an STM32-compatible embedded development environment.
 
@@ -508,9 +476,9 @@ Write / Modify Firmware
           ↓
     Generate Binary
           ↓
-      ST-Link
+       ST-Link
           ↓
-   Flash STM32
+     Flash STM32
           ↓
      Test System
 
@@ -518,19 +486,19 @@ Write / Modify Firmware
 
 The transmitter and receiver firmware are built and programmed separately.
 
-## 15.1 Finite State Machines
+## 14.1 Finite State Machines
 
 The transmitter firmware is organized around initialization, calibration, and active operation states:
 
-![Transmitter FSM](readme_images/transmitter_fsm-1.png)
-*Figure 4. Transmitter finite state machine.*
+<img width="898" height="161" alt="Transmitter_FSM drawio_page-0001" src="https://github.com/user-attachments/assets/aff61b5b-d9cb-4f42-943f-8637584d40c5" />
+
 
 The receiver firmware uses running and fail-safe states to handle normal operation and communication failure:
 
-![Receiver FSM](readme_images/receiver_fsm-1.png)
-*Figure 5. Receiver finite state machine.*
+<img width="711" height="463" alt="Receiver_FSM drawio_page-0001" src="https://github.com/user-attachments/assets/f92ccb28-b724-4022-b0c0-24f5b7700df8" />
 
-## 16. Development Tools
+
+## 15. Development Tools
 
 The project uses the following development tools and technologies:
 
@@ -543,7 +511,7 @@ The project uses the following development tools and technologies:
 - **Motor Control:** GPIO + PWM
 - **Version Control:** Git / GitHub
 
-## 17. Challenges and Design Considerations
+## 16. Challenges and Design Considerations
 
 Several practical challenges were considered during the development of the system.
 
@@ -571,7 +539,7 @@ DC motors do not respond perfectly linearly to PWM changes. Factors such as fric
 
 Therefore, the PWM control range and movement thresholds may require practical adjustment during testing.
 
-## 18. Limitations and Future Improvements
+## 17. Limitations and Future Improvements
 
 This project is primarily developed as an embedded systems learning project and therefore has several possible areas for improvement:
 
@@ -607,7 +575,7 @@ Future Improvements
 
 ```
 
-## 19. Conclusion
+## 18. Conclusion
 
 This project demonstrates the development of a wireless robot car control system using STM32.
 
@@ -615,11 +583,21 @@ The system combines sensor acquisition, motion estimation, wireless communicatio
 
 Through this project, the system provides practical experience in integrating multiple embedded peripherals and developing a real-time control system from the transmitter input to the physical movement of the robot.
 
-## 20. Team Members
+## 19. Team Members
 
-This project was developed collaboratively by:
+### Team Information
 
-- **Mạch Viễn An**
-- **Phạm Đỗ Hồng Phúc**
-- **Nguyễn Phúc Khải**
-- **Nguyễn Công Tú**
+**Team:** PỎSCHE WITH NO BRAKES  
+**Mentor:** Võ Quang Vinh
+
+### Our Team
+
+👑 **Team Leader**  
+- Mạch Viễn An
+
+👥 **Team Members**  
+- Phạm Đỗ Hồng Phúc
+- Nguyễn Phúc Khải
+- Nguyễn Công Tú
+
+The project was developed as a collaborative team project under the guidance of our mentor.
